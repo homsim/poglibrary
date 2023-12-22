@@ -2,6 +2,7 @@
 
 class Book
 {
+    // holds informations about the book
 private:
     std::string title;
     std::string author;
@@ -9,4 +10,3 @@ private:
 public:
     Book();
 };
-
