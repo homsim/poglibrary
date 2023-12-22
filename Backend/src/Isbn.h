@@ -2,7 +2,8 @@
 #include<vector>
 
 struct Isbn
-{
+{   
+    // re-work this object
     std::string isbn;
     Isbn() :isbn("") {};
     Isbn(std::string isbn);
