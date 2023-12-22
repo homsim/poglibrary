@@ -31,7 +31,6 @@ The general idea is to build a library system that archives all owned books, the
 
 ## Open questions:
 
-
 - Does the structure make sense? 
     - I would like to use C++ from a learning aspect, but does it even make sense to use it with SQL being the main database?
 - How should the phone communicate with the Raspi?
