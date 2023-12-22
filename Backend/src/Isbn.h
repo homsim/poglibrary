@@ -5,7 +5,7 @@ struct Isbn
 {   
     // re-work this object
     std::string isbn;
-    Isbn() :isbn("") {};
+    Isbn() :isbn("000-0-00-000000-0") {};
     Isbn(std::string isbn);
 
     bool isbn_checks(const std::string& isbn);
