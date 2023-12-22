@@ -1,11 +1,11 @@
-#include "ISBN.h"
+#include "Isbn.h"
 
 class Book
 {
 private:
     std::string title;
     std::string author;
-    ISBN isbn;
+    Isbn isbn;
 public:
     Book();
 };
