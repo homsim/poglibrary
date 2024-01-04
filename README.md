@@ -57,7 +57,7 @@ The general idea is to build a library system that archives all owned books, the
 - [ ] Sketch out the Java-DB-interface
 - [ ] Build the mainframe, which automatically installs, initializes and sets up a new DB on a new device
 - [ ] Set it up on a Raspi
-- [ ] Set up some API-like thing to access the Java-methods externally
+- [ ] Implement a socket using `java.net.Socket` to enable external access to the interface
 - [ ] Research network stuff, set up the Raspi for network access and make it save
 - [ ] Write the App on my old Pixel 4a or Lenovo tablet
 - [ ] Think about deployment: Automatic deployment and build via git vs Docker
