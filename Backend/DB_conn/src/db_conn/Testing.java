@@ -5,6 +5,9 @@ public class Testing {
         Person borrower = new Person("Ralf", "Witz");
         Book book = new Book("Das Kind", new Person("Sebastian", "Fitzek"), new Isbn("9783785749166"));
 
-        Queries.addBorrower(borrower, book);
+        //Queries.addBorrower(borrower, book);
+        Queries.addBook(book);
+
+        System.out.println("Testing finished");
     }
 }

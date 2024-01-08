@@ -2,10 +2,15 @@ package db_conn;
 
 import java.sql.*;
 
-// put here all the SQL queries needed
-
 public final class Queries {
     // utility class for all the needed SQL queries
+    /*
+     * Some best practices for JDBC queries:
+     *  - Using PreparedStatement objects instead if Statement
+     *  - For repeated requests, use Statement.addBatch() and .executeBatch()
+     *      -> Disable auto-commit mode
+     */
+
     private static final String DB_URL = "jdbc:mariadb://localhost:3306/testdb";
     private static final String DB_USER = "exampleuser";
     private static final String DB_PW = "password";
@@ -41,13 +46,12 @@ public final class Queries {
             prepStmt.setString(2, book.getAuthor().getFormal());
             prepStmt.setString(3, book.getTitle());
 
-            ResultSet result = prepStmt.executeQuery();
+            prepStmt.executeQuery();
 
-            /*
-             * Analyse the result for errors !!!
-             */
         } catch (SQLException ex) {
             ex.printStackTrace();
+        } finally {
+            
         }
     }
 
@@ -104,7 +108,7 @@ public final class Queries {
             prepStmt.setString(4, borrower.getLast());
             prepStmt.setString(5, book.getIsbn().getIsbn());
 
-            ResultSet result = prepStmt.executeQuery();
+            prepStmt.executeQuery();
 
             /*
              * Analyse the result for errors !!!
@@ -138,7 +142,7 @@ public final class Queries {
             PreparedStatement prepStmt = conn.prepareStatement(stmt);
             prepStmt.setString(1, book.getIsbn().getIsbn());
 
-            ResultSet result = prepStmt.executeQuery();
+            prepStmt.executeQuery();
 
             /*
              * Analyse the result for errors !!!
@@ -171,7 +175,7 @@ public final class Queries {
             PreparedStatement prepStmt = conn.prepareStatement(stmt);
             prepStmt.setString(1, book.getIsbn().getIsbn());
 
-            ResultSet result = prepStmt.executeQuery();
+            prepStmt.executeQuery();
 
             /*
              * Analyse the result for errors !!!
