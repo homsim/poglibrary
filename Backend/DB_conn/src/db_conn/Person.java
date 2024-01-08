@@ -36,7 +36,6 @@ public class Person {
     public String getFormal() {
         // get formal writing of a persons name,
         // i.e. "<lastname>, <firstname>"
-
         String str;
         StringBuilder str_bld = new StringBuilder();
         str_bld.append(this.lastname);
