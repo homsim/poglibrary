@@ -1,12 +1,12 @@
 package db_conn;
 
 public class Book {
-    String title;
-    Person author;
-    Isbn isbn;
+    private String title;
+    private Person author;
+    private Isbn isbn;
 
-    boolean borrowed;
-    Person borrowed_by;
+    private boolean borrowed;
+    private Person borrowed_by;
 
     public Book() {
         this.title = "";
@@ -24,9 +24,29 @@ public class Book {
         borrowed_by = new Person();
     }
 
+    public String getTitle() {
+        return this.title;
+    }
+
+    public Person getAuthor() {
+        return this.author;
+    }
+
+    public Isbn getIsbn() {
+        return this.isbn;
+    }
+
+    public Boolean getBorrowed() {
+        return this.borrowed;
+    }
+
+    public Person getBorrower() {
+        return this.borrowed_by;
+    }
+
     @Override
     public String toString() {
         // arbitrary
-        return this.title + "; " + this.author;
+        return this.title + "; " + this.author + "; " + this.isbn.getIsbn();
     }
 }

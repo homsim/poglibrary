@@ -18,16 +18,19 @@ The PogLibrary has the following tables with respective members:
 | isbn           | VARCHAR      |                                     |
 | author         | VARCHAR      |                                     |
 | title          | VARCHAR      |                                     |
+| quantity       | INTEGER      | Number of copies in the library     |
 | borrowed       | BOOLEAN      | Is the book currently borrowed?     |
-| borrowed_by    | VARCHAR      | By whom was this book borrowed?     |
+| borrower_id    | INTEGER      | By whom was this book borrowed?     |
 | cover          | custom...    | Cover image of the book             |
 
-### Persons/Borrowers
+### Borrowers
 
 | Name           | SQL datatype | Description                         |
 | -------------- | ------------ | ----------------------------------- |
+| borrower_id    | INTEGER      |                                     |
 | firstname      | VARCHAR      |                                     |
 | lastname       | VARCHAR      |                                     |
 
 ## Relations
 
+Borrowers(borrower_id) -> Books(borrower_id) 

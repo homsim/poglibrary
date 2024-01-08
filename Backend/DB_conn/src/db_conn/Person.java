@@ -25,8 +25,30 @@ public class Person {
         this.lastname = lastname;
     }
 
+    public String getFirst() {
+        return this.firstname;
+    }
+
+    public String getLast() {
+        return this.lastname;
+    }
+
+    public String getFormal() {
+        // get formal writing of a persons name,
+        // i.e. "<lastname>, <firstname>"
+
+        String str;
+        StringBuilder str_bld = new StringBuilder();
+        str_bld.append(this.lastname);
+        str_bld.append(", ");
+        str_bld.append(this.firstname);
+        str = str_bld.toString();
+
+        return str;
+    }
+
     @Override
     public String toString() {
-        return this.lastname + ", " + this.lastname;
+        return this.firstname + ", " + this.lastname;
     }
 }

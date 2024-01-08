@@ -10,7 +10,7 @@ import java.net.URISyntaxException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-// I could instead make all the methods of this class methods of the Book class
+// Class that gets books informations via ISBN
 
 public class OpenLibraryAPI {
     /*
@@ -31,15 +31,21 @@ public class OpenLibraryAPI {
         this.title = object.getString("title");
         this.isbn_13 = new Isbn(object.getJSONArray("isbn_13").getString(0), false);
 
-        // get author's name... unfortunately, this requires a second API request in openlibrary
+        // get author's name... unfortunately, this requires a second API request in
+        // openlibrary
         this.author = new Person(
                 jsonAccess(object.getJSONArray("authors").getJSONObject(0).getString("key")).getString("name"));
     }
 
     private static JSONObject jsonAccess(String key) {
         try {
-            URI uri = new URI("https://openlibrary.org/" + key + ".json");
+            StringBuilder uri_str = new StringBuilder("https://openlibrary.org/");
+            uri_str.append(key);
+            uri_str.append(".json");
+
+            URI uri = new URI(uri_str.toString());
             URL url = uri.toURL();
+
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setInstanceFollowRedirects(true);
@@ -47,9 +53,11 @@ public class OpenLibraryAPI {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("charset", "utf-8");
             connection.connect();
+
             InputStream inStream = connection.getInputStream();
             JSONTokener tokener = new JSONTokener(inStream);
             JSONObject object = new JSONObject(tokener);
+
             return object;
         } catch (IOException ex) {
             ex.printStackTrace();
