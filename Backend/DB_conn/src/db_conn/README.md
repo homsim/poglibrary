@@ -23,7 +23,7 @@ The form of the incoming (to the server) request string should enable the follow
 ### overall
 
 ```
-<r/w>_<func-name>_[<arg-string>]
+<r/w>_<func-name>_[<arg-string>];
 ```
 
 ### arg-string
