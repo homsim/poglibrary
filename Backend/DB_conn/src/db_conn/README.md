@@ -28,6 +28,8 @@ The form of the incoming (to the server) request string should enable the follow
 
 ### arg-string
 
+The commas should separate multiple function arguments from each others, where the string is surrounded by qoutes to 
+
 ```
 <"<arg-string1>","<arg-string2>",...>
 ```
