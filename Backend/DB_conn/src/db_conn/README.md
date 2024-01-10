@@ -36,5 +36,6 @@ The commas should separate multiple function arguments from each others, where t
 
 # Alternatives
 
-1. **Java Compiler API:** It is possible to call the java compiler from within java using the java compiler API `javax.tools.JavaCompiler`. In principle, I could use that to interpret code in place. The only question is if this is efficient on a Raspberry Pi...
-2. **BeanShell:** As far as I understand this does the same as the above, but with a much more simple Syntax, however with less control over datastreams. This could mean it is also more lightweight, which would solve the possible problem on the Raspi.
+1. **Java Compiler API:** It is possible to call the java compiler from within java using the java compiler API `javax.tools.JavaCompiler`. In principle, I could use that to compile and execute code in place. The only question is if it is efficient on a Raspberry Pi, because the compilation of repeated socket strings could create a huge overhead...
+2. **BeanShell:** This allows direct interpretation of Java code without the need to compile it. I guess this makes it more applicable for the use on a Raspberry Pi. It may have he downside of a less controlled datastream. All assigned variables etc. are stored in an instance of the `bsh.Interpreter` class and have to be retrieved accordingly. I am not yet sure about type savety and larger data streams like the ones needed for reading the SQL Books table
+
