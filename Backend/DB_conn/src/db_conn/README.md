@@ -33,3 +33,8 @@ The commas should separate multiple function arguments from each others, where t
 ```
 <"<arg-string1>","<arg-string2>",...>
 ```
+
+# Alternatives
+
+1. **Java Compiler API:** It is possible to call the java compiler from within java using the java compiler API `javax.tools.JavaCompiler`. In principle, I could use that to interpret code in place. The only question is if this is efficient on a Raspberry Pi...
+2. **BeanShell:** As far as I understand this does the same as the above, but with a much more simple Syntax, however with less control over datastreams. This could mean it is also more lightweight, which would solve the possible problem on the Raspi.
