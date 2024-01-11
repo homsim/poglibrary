@@ -10,7 +10,7 @@ public class TestSocket {
         try {
             String ip = "localhost";
             int port = 1111;
-            String mess = "Hello :)";
+            String mess = "q";
             Socket socket = new Socket(ip, port);
             writeMess(socket, mess);
 

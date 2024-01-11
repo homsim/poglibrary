@@ -10,13 +10,18 @@ public class Main {
     private final static int port = 1111;
 
     public static void main(String[] args) {
-        String recStr = "";
+        String recStr = new String();
         try (ServerSocket server = new ServerSocket(port);) {
-            while (recStr != "quit") {
+            while (recStr != null) {
                 Socket client = server.accept(); // blocks until there is a connection
                 recStr = reading(client);
-                System.out.println(recStr);
+                System.out.print(recStr);
+                if (recStr.equals("q")) {
+                    break;
+                }
             }
+
+            System.out.println("Exetuted nicely");
 
             /*
              * add proper error streamlining,
@@ -25,7 +30,7 @@ public class Main {
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (Exception ex) {
-                 ex.printStackTrace();
+            ex.printStackTrace();
         }
 
     }
