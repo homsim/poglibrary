@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import bsh.Interpreter;
+
 public class Main {
     private final static int port = 1111;
 
