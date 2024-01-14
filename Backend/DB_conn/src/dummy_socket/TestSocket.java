@@ -1,4 +1,4 @@
-package socket_testing;
+package dummy_socket;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -10,7 +10,7 @@ public class TestSocket {
         try {
             String ip = "localhost";
             int port = 1111;
-            String mess = "q";
+            String mess = "r&addBookFromIsbn&9783785749166";
             Socket socket = new Socket(ip, port);
             writeMess(socket, mess);
 

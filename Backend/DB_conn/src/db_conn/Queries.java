@@ -42,7 +42,7 @@ public final class Queries {
 
         PreparedStatement prepStmt = conn.prepareStatement(stmt);
         prepStmt.setString(1, book.getIsbn().getIsbn());
-        prepStmt.setString(2, book.getAuthor().getFormal());
+        prepStmt.setString(2, book.getAuthors().toString());        // this has to be changed
         prepStmt.setString(3, book.getTitle());
 
         prepStmt.executeQuery();

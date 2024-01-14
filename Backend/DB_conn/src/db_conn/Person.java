@@ -1,5 +1,7 @@
 package db_conn;
 
+import java.util.Arrays;
+
 public class Person {
     String firstname;
     String lastname;
@@ -11,9 +13,18 @@ public class Person {
 
     public Person(String name) {
         if (name.indexOf(",") == -1) {
-            this.firstname = "";
-            this.lastname = name;
+            if (name.indexOf(" ") == -1) {
+                // given String: "Mustermann"
+                this.firstname = "";
+                this.lastname = name;
+            } else {
+                // given String: "Max M. Mustermann"
+                String[] splitted = name.split(" ");
+                this.firstname = String.join(" ", Arrays.asList(Arrays.copyOfRange(splitted, 0, splitted.length-1)));
+                this.lastname = splitted[splitted.length-1];
+            }
         } else {
+            // given String: Mustermann, Max
             String[] splitted = name.split(",");
             this.firstname = splitted[1];
             this.lastname = splitted[0];

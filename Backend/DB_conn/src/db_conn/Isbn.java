@@ -113,6 +113,9 @@ public class Isbn {
                 chksum += i % 2 == 0 ? digits.get(i) : 3 * digits.get(i);
             }
             int chkdigit = 10 - chksum % 10;
+            if (chkdigit == 10) {
+                chkdigit = 0;   // a calculated 10 is represented by a 0
+            }
             if (chkdigit != digits.get(12)) {
                 String err_mess = "Given ISBN-13 check digit " + digits.get(12).toString()
                         + " does not add up with calculated one (" + chkdigit + ").";

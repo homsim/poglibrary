@@ -2,7 +2,7 @@ package db_conn;
 
 public class Book {
     private String title;
-    private Person author;
+    private Person[] authors;
     private Isbn isbn;
 
     private boolean borrowed;
@@ -10,15 +10,15 @@ public class Book {
 
     public Book() {
         this.title = "";
-        this.author = new Person();
+        this.authors = new Person[0];
         this.isbn = new Isbn();
         borrowed = false;
         borrowed_by = new Person();
     }
 
-    public Book(String title, Person author, Isbn isbn) {
+    public Book(String title, Person[] authors, Isbn isbn) {
         this.title = title;
-        this.author = author;
+        this.authors = authors;
         this.isbn = isbn;
         borrowed = false;
         borrowed_by = new Person();
@@ -28,8 +28,8 @@ public class Book {
         return this.title;
     }
 
-    public Person getAuthor() {
-        return this.author;
+    public Person[] getAuthors() {
+        return this.authors;
     }
 
     public Isbn getIsbn() {
@@ -47,6 +47,6 @@ public class Book {
     @Override
     public String toString() {
         // arbitrary
-        return this.title + "; " + this.author + "; " + this.isbn.getIsbn();
+        return this.title + "; " + this.authors.toString() + "; " + this.isbn.getIsbn();
     }
 }
