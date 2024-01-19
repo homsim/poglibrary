@@ -33,7 +33,7 @@ public class OpenLibraryAPI {
         /*
          * the title still has the problem that there may or may not
          * be a subtitle (see example: 9783423760898). 
-         * need to add functionality to get this into this.title, too
+         * need to add functionality to get it into this.title, too
          */
         this.authors = getAuthorJson(object);
         this.isbn_13 = getIsbnJson(object);
@@ -137,51 +137,4 @@ public class OpenLibraryAPI {
 
         return isbn_13;
     }
-
-    /* old
-    public OpenLibraryAPI(Isbn isbn) throws IOException, URISyntaxException {
-        // get the book entry via isbn
-        JSONObject object = jsonAccess("isbn/" + isbn);
-        this.title = object.getString("title");
-        this.isbn_13 = new Isbn(object.getJSONArray("isbn_13").getString(0), false);
-
-        // get author's name... unfortunately, this requires a second API request in
-        // openlibrary
-        this.author = new Person(
-            jsonAccess(object.getJSONArray("authors").getJSONObject(0).getString("key")).getString("name"));
-    }
-
-    public Book createBook() {
-        Book book = new Book(
-            this.title,
-            this.author,
-            this.isbn_13
-        );
-        return book;
-    }
-
-
-    private static JSONObject jsonAccess(String key) throws IOException, URISyntaxException {
-        StringBuilder uri_str = new StringBuilder("https://openlibrary.org/");
-        uri_str.append(key);
-        uri_str.append(".json");
-
-        URI uri = new URI(uri_str.toString());
-        URL url = uri.toURL();
-
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
-        connection.setInstanceFollowRedirects(true);
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("charset", "utf-8");
-        connection.connect();
-
-        InputStream inStream = connection.getInputStream();
-        JSONTokener tokener = new JSONTokener(inStream);
-        JSONObject object = new JSONObject(tokener);
-
-        return object;
-    }
-    */
 }
