@@ -16,8 +16,6 @@ import org.json.JSONTokener;
 public class OpenLibraryAPI {
     /*
      * ToDo:
-     * - generally, I need to add functionality to handle books with mulitple
-     * authors
      * - (get covers, that can be added in the DB:
      * https://covers.openlibrary.org/b/isbn/<SOME_ISBN>-M.jpg)
      */
@@ -99,14 +97,27 @@ public class OpenLibraryAPI {
     }
 
     private static String getTitleJson(JSONObject object) {
-        JSONArray docs = object.getJSONArray("docs");
+        String fullTitle = "";
+	    JSONArray docs = object.getJSONArray("docs");
         JSONObject docsObj = docs.getJSONObject(0);
         JSONObject editions = docsObj.getJSONObject("editions");
         JSONArray editionsDocs = editions.getJSONArray("docs");
         JSONObject editionDocsObj = editionsDocs.getJSONObject(0);
-        String title = editionDocsObj.getString("title");
+        String key = editionDocsObj.getString("key");
 
-        return title;
+        // getting subtitle requires another json request
+        // -> getting isbn_13 does, too -> maybe I should make the returning
+        // JSONObject a member of the class and just access it 
+	    JSONObject books = getJson(key);
+    	String title = getString("title");
+    	try {
+    		String subtitle = getString("subtitle");
+    		fullTitle = title + " - " subtitle;
+    	} catch (JSONException ex) {
+    		// if there is no subtitle, use only the title
+    		fullTitle = title;
+    	}
+        return fullTitle;
     }
 
     private static Person[] getAuthorJson(JSONObject object) {
@@ -130,7 +141,7 @@ public class OpenLibraryAPI {
         JSONObject editionDocsObj = editionsDocs.getJSONObject(0);
         String key = editionDocsObj.getString("key");
         
-        // getting the 
+        // getting isbn_13 requires another json request
         JSONObject books = getJson(key);
         JSONArray isbnArray = books.getJSONArray("isbn_13");
         Isbn isbn_13 = new Isbn(isbnArray.getString(0), false);
