@@ -29,11 +29,6 @@ public class OpenLibraryAPI {
         // get the book entry via isbn
         JSONObject object = getJsonSearch(isbn.toString());
         this.title = getTitleJson(object);
-        /*
-         * the title still has the problem that there may or may not
-         * be a subtitle (see example: 9783423760898). 
-         * need to add functionality to get it into this.title, too
-         */
         this.authors = getAuthorJson(object);
         this.isbn_13 = getIsbnJson(object);
 
