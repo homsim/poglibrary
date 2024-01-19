@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.json.JSONException;
 
 // Class that gets books informations via ISBN
 
@@ -20,9 +21,9 @@ public class OpenLibraryAPI {
      * https://covers.openlibrary.org/b/isbn/<SOME_ISBN>-M.jpg)
      */
 
-    String title;
-    Person[] authors;
-    Isbn isbn_13;
+    public String title;
+    public Person[] authors;
+    public Isbn isbn_13;
 
     public OpenLibraryAPI(Isbn isbn) throws IOException, URISyntaxException {
         // get the book entry via isbn
@@ -96,7 +97,7 @@ public class OpenLibraryAPI {
         return object;
     }
 
-    private static String getTitleJson(JSONObject object) {
+    private static String getTitleJson(JSONObject object) throws IOException, URISyntaxException {
         String fullTitle = "";
 	    JSONArray docs = object.getJSONArray("docs");
         JSONObject docsObj = docs.getJSONObject(0);
@@ -109,10 +110,10 @@ public class OpenLibraryAPI {
         // -> getting isbn_13 does, too -> maybe I should make the returning
         // JSONObject a member of the class and just access it 
 	    JSONObject books = getJson(key);
-    	String title = getString("title");
+    	String title = books.getString("title");
     	try {
-    		String subtitle = getString("subtitle");
-    		fullTitle = title + " - " subtitle;
+    		String subtitle = books.getString("subtitle");
+    		fullTitle = title + " - " + subtitle;
     	} catch (JSONException ex) {
     		// if there is no subtitle, use only the title
     		fullTitle = title;
