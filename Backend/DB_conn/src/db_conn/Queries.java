@@ -206,7 +206,8 @@ public final class Queries {
         for (String column : columns) {
             if (column.equals(BORROWER_ALIAS)) {
                 // alias for borrowed_by
-                stmtBld.append("(CONCAT(Borrowers.firstname,\" \",Borrowers.lastname)) AS borrowed_by ");
+                stmtBld.append("(CONCAT(Borrowers.firstname,\" \",Borrowers.lastname)) AS ");
+                stmtBld.append(BORROWER_ALIAS + " ");
             } else {
                 stmtBld.append("Books." + column);
             }
