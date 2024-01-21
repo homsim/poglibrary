@@ -12,7 +12,8 @@ import java.sql.SQLException;
  * <code>&#60;&#34;r&#34;/&#34;w&#34;&#62;&#38;&#60;methodName&#62;&#38;&#60;Arg1&#62;;&#60;Arg2&#62;;...</code>.
  * The units for the request type, method name and arguments are separated by
  * <code>&#38;</code>. Arguments for the callable method
- * <code>&#60;methodName&#62;</code> are separated by ;.
+ * <code>&#60;methodName&#62;</code> are separated by <code>;</code>. Generally, they are interpreted as String. However, some methods need arrays as method arguments. 
+ * The array elements can be separated using <code>|</code>.
  */
 public class Requests {
     private Requests() {
@@ -42,6 +43,7 @@ public class Requests {
      * <li>title</li>
      * <li>quantity</li>
      * <li>borrowed</li>
+     * <li>borrowed_by</li>
      * </ul>
      * 
      * @param columns formatted string of column names
@@ -81,7 +83,7 @@ public class Requests {
      *                      query
      */
     public static int addBookManually(String title, String authorsStr, String isbn) throws SQLException {
-        String[] authorsStrArray = Interpreter.interpetAuthors(authorsStr);
+        String[] authorsStrArray = Interpreter.interpetArrays(authorsStr);
         Person[] authors = new Person[authorsStrArray.length]; 
         for (int i = 0; i < authorsStrArray.length; i++) {
             authors[i] = new Person(authorsStrArray[i]);

@@ -90,15 +90,15 @@ public class Interpreter {
 
     }
 
-    public static String[] interpetAuthors(String authorsStr) {
-        StringTokenizer authorTok = new StringTokenizer(authorsStr, String.valueOf(ARRAY_INDICATOR), false);
-        int nAuthors = authorTok.countTokens();
-        String[] authors = new String[nAuthors];
-        for (int i = 0; i < nAuthors; i++) {
-            authors[i] = authorTok.nextToken();
+    public static String[] interpetArrays(String arrayStr) {
+        StringTokenizer arrayTok = new StringTokenizer(arrayStr, String.valueOf(ARRAY_INDICATOR), false);
+        int nArray = arrayTok.countTokens();
+        String[] array = new String[nArray];
+        for (int i = 0; i < nArray; i++) {
+            array[i] = arrayTok.nextToken();
         }
 
-        return authors; 
+        return array; 
     }
 
     private static void chkReturn(Object obj) throws IllegalAccessException {

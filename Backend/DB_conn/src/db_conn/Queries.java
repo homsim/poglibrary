@@ -182,9 +182,15 @@ public final class Queries {
 
     public static String recBooks(String columnsStr) throws SQLException {
         /*
-         * -- get entries from the Books table. columns are decided by columnStr
-         * SELECT isbn,author,title FROM `Books`;
+         * -- get entries from the Books table. columns are decided by columnStr.
+         * SELECT
+         * Books.isbn,Books.title,CONCAT(Borrowers.firstname," ",Borrowers.lastname)
+         * FROM `Books`
+         * LEFT JOIN `Borrowers` ON Books.borrower_id = Borrowers.borrower_id
+         * ;
+         * 
          */
+        final String BORROWER_ALIAS = "borrowed_by";
 
         StringTokenizer columnTok = new StringTokenizer(columnsStr, ",", false);
         int nColumns = columnTok.countTokens();
@@ -197,14 +203,25 @@ public final class Queries {
         String stmt;
         StringBuilder stmtBld = new StringBuilder();
         stmtBld.append("SELECT ");
-        stmtBld.append(columnsStr);
-        stmtBld.append(" FROM `Books`;");
+        for (String column : columns) {
+            if (column.equals(BORROWER_ALIAS)) {
+                // alias for borrowed_by
+                stmtBld.append("(CONCAT(Borrowers.firstname,\" \",Borrowers.lastname)) AS borrowed_by ");
+            } else {
+                stmtBld.append("Books." + column);
+            }
+            stmtBld.append(",");
+        }
+        stmtBld.deleteCharAt(stmtBld.length() - 1); // remove last ','
+        stmtBld.append(" FROM `Books` ");
+        stmtBld.append("LEFT JOIN `Borrowers` ON Books.borrower_id = Borrowers.borrower_id ");
+        stmtBld.append(";");
         stmt = stmtBld.toString();
 
         PreparedStatement prepStmt = conn.prepareStatement(stmt);
-
         ResultSet result = prepStmt.executeQuery();
 
+        // convert the reuslt to JSON
         JSONArray resultJsonArray = new JSONArray();
         while (result.next()) {
             JSONObject row = new JSONObject();
