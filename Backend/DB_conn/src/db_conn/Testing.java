@@ -1,14 +1,23 @@
 package db_conn;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class Testing {
     public static void main(String[] args) {
         ArrayList<Isbn> isbns = new ArrayList<Isbn>();
         try {
+            Person[] authors = {new Person("Max Mustermann"),
+                                new Person("Maximilia musterfrau")};
+            Book book = new Book("Das Test Buch",
+                authors,
+                new Isbn("3423760893")
+            );
+            Queries.addBook(book);
+
+            /*
             // read in some isbn's
             Scanner scanner = new Scanner(new File("tests/test-isbn.txt"));
             while (scanner.hasNextLine()) {
@@ -26,6 +35,7 @@ public class Testing {
                 System.out.println(olasi.isbn_13);
                 System.out.println("-------------------------------------------------");
             }
+            */
         } catch (Exception ex) {
             ex.printStackTrace();
         }

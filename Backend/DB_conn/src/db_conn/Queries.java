@@ -2,6 +2,15 @@ package db_conn;
 
 import java.sql.*;
 
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public final class Queries {
     // utility class for all the needed SQL queries
     /*
@@ -33,22 +42,22 @@ public final class Queries {
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
 
         String stmt;
-        StringBuilder stmt_bld = new StringBuilder();
-        stmt_bld.append("INSERT INTO `Books` (isbn, author, title, quantity, borrowed) ");
-        stmt_bld.append("VALUES  (?, ?, ?, 1, FALSE)");
-        stmt_bld.append("ON DUPLICATE KEY UPDATE quantity=quantity+1 ");
-        stmt_bld.append(";");
-        stmt = stmt_bld.toString();
+        StringBuilder stmtBld = new StringBuilder();
+        stmtBld.append("INSERT INTO `Books` (isbn, author, title, quantity, borrowed) ");
+        stmtBld.append("VALUES  (?, ?, ?, 1, FALSE)");
+        stmtBld.append("ON DUPLICATE KEY UPDATE quantity=quantity+1 ");
+        stmtBld.append(";");
+        stmt = stmtBld.toString();
 
         PreparedStatement prepStmt = conn.prepareStatement(stmt);
         prepStmt.setString(1, book.getIsbn().getIsbn());
-        prepStmt.setString(2, book.getAuthors().toString());        // this has to be changed
+        prepStmt.setString(2, Arrays.toString(book.getAuthors())
+                .replace("[", "").replace("]", "")); // this has to be changed
         prepStmt.setString(3, book.getTitle());
 
         prepStmt.executeQuery();
 
     }
-
 
     public static void addBorrower(Person borrower, Book book) throws SQLException {
         /*
@@ -81,19 +90,19 @@ public final class Queries {
         Connection conn = DriverManager.getConnection(DB_URL + "?allowMultiQueries=true", DB_USER, DB_PW);
 
         String stmt;
-        StringBuilder stmt_bld = new StringBuilder();
-        stmt_bld.append("INSERT IGNORE INTO `Borrowers` (firstname, lastname) ");
-        stmt_bld.append("VALUES (?, ?) ");
-        stmt_bld.append("; ");
-        stmt_bld.append("SELECT borrower_id FROM `Borrowers`  ");
-        stmt_bld.append("WHERE BINARY firstname=BINARY ? AND BINARY lastname=BINARY ? ");
-        stmt_bld.append("INTO @borrower_id ");
-        stmt_bld.append("; ");
-        stmt_bld.append("UPDATE `Books` ");
-        stmt_bld.append("SET borrower_id = @borrower_id, borrowed = TRUE ");
-        stmt_bld.append("WHERE BINARY isbn=BINARY ? ");
-        stmt_bld.append("; ");
-        stmt = stmt_bld.toString();
+        StringBuilder stmtBld = new StringBuilder();
+        stmtBld.append("INSERT IGNORE INTO `Borrowers` (firstname, lastname) ");
+        stmtBld.append("VALUES (?, ?) ");
+        stmtBld.append("; ");
+        stmtBld.append("SELECT borrower_id FROM `Borrowers`  ");
+        stmtBld.append("WHERE BINARY firstname=BINARY ? AND BINARY lastname=BINARY ? ");
+        stmtBld.append("INTO @borrower_id ");
+        stmtBld.append("; ");
+        stmtBld.append("UPDATE `Books` ");
+        stmtBld.append("SET borrower_id = @borrower_id, borrowed = TRUE ");
+        stmtBld.append("WHERE BINARY isbn=BINARY ? ");
+        stmtBld.append("; ");
+        stmt = stmtBld.toString();
 
         PreparedStatement prepStmt = conn.prepareStatement(stmt);
         prepStmt.setString(1, borrower.getFirst());
@@ -111,22 +120,26 @@ public final class Queries {
 
     public static void decrQuant(Book book) throws SQLException {
         /*
-         * -- decrease book quantity by 1
+         * -- decrease book quantity by 1 and delete book if quantity <= 0
          * UPDATE `Books`
          * SET quantity=quantity-1
          * WHERE isbn="9783453317161"
+         * ;
+         * DELETE FROM `Books` WHERE quantity <= 0
          * ;
          * 
          */
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
 
         String stmt;
-        StringBuilder stmt_bld = new StringBuilder();
-        stmt_bld.append("UPDATE `Books` ");
-        stmt_bld.append("SET quantity=quantity-1 ");
-        stmt_bld.append("WHERE isbn=? ");
-        stmt_bld.append(";");
-        stmt = stmt_bld.toString();
+        StringBuilder stmtBld = new StringBuilder();
+        stmtBld.append("UPDATE `Books` ");
+        stmtBld.append("SET quantity=quantity-1 ");
+        stmtBld.append("WHERE isbn=? ");
+        stmtBld.append(";");
+        stmtBld.append("DELETE FROM `Books` WHERE quantity <= 0");
+        stmtBld.append(";");
+        stmt = stmtBld.toString();
 
         PreparedStatement prepStmt = conn.prepareStatement(stmt);
         prepStmt.setString(1, book.getIsbn().getIsbn());
@@ -150,12 +163,12 @@ public final class Queries {
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
 
         String stmt;
-        StringBuilder stmt_bld = new StringBuilder();
-        stmt_bld.append("UPDATE `Books` ");
-        stmt_bld.append("SET quantity=quantity+1 ");
-        stmt_bld.append("WHERE isbn=? ");
-        stmt_bld.append(";");
-        stmt = stmt_bld.toString();
+        StringBuilder stmtBld = new StringBuilder();
+        stmtBld.append("UPDATE `Books` ");
+        stmtBld.append("SET quantity=quantity+1 ");
+        stmtBld.append("WHERE isbn=? ");
+        stmtBld.append(";");
+        stmt = stmtBld.toString();
 
         PreparedStatement prepStmt = conn.prepareStatement(stmt);
         prepStmt.setString(1, book.getIsbn().getIsbn());
@@ -165,6 +178,47 @@ public final class Queries {
         /*
          * Analyse the result for errors !!!
          */
+    }
+
+    public static String recBooks(String columnsStr) throws SQLException {
+        /*
+         * -- get entries from the Books table. columns are decided by columnStr
+         * SELECT isbn,author,title FROM `Books`;
+         */
+
+        StringTokenizer columnTok = new StringTokenizer(columnsStr, ",", false);
+        int nColumns = columnTok.countTokens();
+        List<String> columns = new ArrayList<String>();
+        for (int i = 0; i < nColumns; i++) {
+            columns.add(columnTok.nextToken());
+        }
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+
+        String stmt;
+        StringBuilder stmtBld = new StringBuilder();
+        stmtBld.append("SELECT ");
+        stmtBld.append(columnsStr);
+        stmtBld.append(" FROM `Books`;");
+        stmt = stmtBld.toString();
+
+        PreparedStatement prepStmt = conn.prepareStatement(stmt);
+
+        ResultSet result = prepStmt.executeQuery();
+
+        JSONArray resultJsonArray = new JSONArray();
+        while (result.next()) {
+            JSONObject row = new JSONObject();
+            columns.forEach(cn -> {
+                try {
+                    row.put(cn, result.getObject(cn));
+                } catch (JSONException | SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+            resultJsonArray.put(row);
+        }
+
+        return resultJsonArray.toString();
     }
 
 }
