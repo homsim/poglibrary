@@ -22,18 +22,22 @@ The general idea is to build a library system that archives all owned books, the
 - See who borrowed the book and when
 - Use camera in some way (see above) to access books
 
-### Backend: C++-Script managing a database
-### Datebase: MySQL (subject to change... may be overkill)
+### Backend: Java-Script managing a database
+
+- JDBC (Java DataBase Connectivity) communicates with local database (local to the JVM)
+- Manages data integrity, i.e. checks ISBN
+- Finds book informations from some internet database and fills the database automatically from only the ISBN
+
+### Datebase: MySQL/mariaDB
+
+**Tables:**
+(The equivalent dataclasses in Java will be similar)
+
+- *Libaries* (in case the user wants more structure)
+- *Books*
+- *Persons* (to store borrowers)
+
 ### Hardware:
 
-- Raspberry Pi with necessary network features
-- Some Android Phone
-
-## Open questions:
-
-
-- Does the structure make sense? 
-    - I would like to use C++ from a learning aspect, but does it even make sense to use it with SQL being the main database?
-- How should the phone communicate with the Raspi?
-    - Could use a scrap Android phone and permanently connect it via USB-C
-    - Network communcation in local network -> could be a pain in the ass...
+- Raspberry Pi with necessary network connection
+- Some Android Phone/Tablet
