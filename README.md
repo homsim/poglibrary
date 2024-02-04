@@ -42,14 +42,6 @@ The general idea is to build a library system that archives all owned books, the
 - Raspberry Pi with necessary network connection
 - Some Android Phone/Tablet
 
-## Open questions:
-
-- Does the structure make sense? 
-    - I would like to use Java from a learning aspect, but does it even make sense to use it with SQL being the main database?
-- How should the phone communicate with the Raspi?
-    - Could use a scrap Android phone and permanently connect it via USB-C
-    - Network communcation in local network -> could be a pain in the ass...
-
 # Development plan
 
 - [X] Conceptualize the basics

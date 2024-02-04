@@ -34,3 +34,9 @@ The PogLibrary has the following tables with respective members:
 ## Relations
 
 Borrowers(borrower_id) -> Books(borrower_id) 
+
+# ToDo
+
+- [ ] Automate the setup process of the library
+- [ ] Specify a proper directory in which the data lies
+- [ ] Backup function?

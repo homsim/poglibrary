@@ -1,13 +1,8 @@
 # ToDo
 
 - [ ] Add backup API in case Openlibrary.org fails
-- [ ] Clean up the exception handling: which methods should be terminated in case of an exception in which not...
-- [ ] -> in `Queries.java` replace the `try-catch` blocks by `throws SQLException` statements in the method declaration
-- [ ] Write proper queries -> how to properly stack statements ???
-    - [ ] A kind of wrapper function that handles the connection
-    - [ ] Respective functions for reading and writing to the DB
-- [ ] Think of and implement a method that interprets the socket clients' bytestrings to execeture certain functions
-
+- [X] Write proper queries -> how to properly stack statements
+- [X] Think of and implement a method that interprets the socket clients' bytestrings to execeture certain functions
 
 
 # Socket string interpreter:
@@ -18,27 +13,6 @@ I need a way for the client to communicate with the backend server. Somehow requ
 - give function arguments -> this has to be some simple data form, e.g. int/float/char/string send as a bytestring, which is then converted accordingly
     - on the `write` side of things, this will probably come down to passing either Person names or ISBN's
 
-## Draft
+## Solution
 
-### overall
-
-```
-<r/w>_<func-name>_[<arg-string>];
-```
-
-### arg-string
-
-The commas should separate multiple function arguments from each others, where the string is surrounded by qoutes to 
-
-```
-<"<arg-string1>","<arg-string2>",...>
-```
-
-# Alternatives
-
-1. **Java Compiler API:** It is possible to call the java compiler from within java using the java compiler API `javax.tools.JavaCompiler`. In principle, I could use that to compile and execute code in place. The only question is if it is efficient on a Raspberry Pi, because the compilation of repeated socket strings could create a huge overhead...
-2. **BeanShell:** This allows direct interpretation of Java code without the need to compile it. I guess this makes it more applicable for the use on a Raspberry Pi. It may have he downside of a less controlled datastream. All assigned variables etc. are stored in an instance of the `bsh.Interpreter` class and have to be retrieved accordingly. I am not yet sure about type savety and larger data streams like the ones needed for reading the SQL Books table, in part because I am not sure yet how to structure the reading queries to the database in order to display the full library on the end device.
-
-Both alternatives do not seem to be relient enough. A few afterthoughts on this: The Compiler API would be a dangerous solution. Also, I planned to only use a JRE on the Raspberry and not require to install the JDK, which would provide the compiler. I have not actually tried to use it, but my fear is that it will have the same problem as BeanShell, which I haven't thought about before: The BeanShell interpreter will of course have its own namespace, which means it does not have access to the local function of the `db_conn` package. And as far as I understand it is not possible to set the namespace to the package, because this is prohibited by Java.
-
-3. Use Reflection (`java.lang.reflect`)
+Use Reflection (`java.lang.reflect`)
