@@ -3,6 +3,8 @@ package db_conn;
 import java.sql.*;
 
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -222,15 +224,17 @@ public final class Queries {
         PreparedStatement prepStmt = conn.prepareStatement(stmt);
         ResultSet result = prepStmt.executeQuery();
 
-        // convert the reuslt to JSON
+        // convert the result to JSON
         JSONArray resultJsonArray = new JSONArray();
         while (result.next()) {
             JSONObject row = new JSONObject();
             columns.forEach(cn -> {
                 try {
                     row.put(cn, result.getObject(cn));
-                } catch (JSONException | SQLException e) {
-                    e.printStackTrace();
+                } catch (JSONException | SQLException ex) {
+                    /* how to handle this exception...?
+                     */
+                    Logger.getLogger("globalLogger").log(Level.WARNING, ex.getCause().toString());
                 }
             });
             resultJsonArray.put(row);

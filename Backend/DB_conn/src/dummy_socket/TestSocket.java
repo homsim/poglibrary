@@ -12,8 +12,10 @@ public class TestSocket {
         try {
             String ip = "localhost";
             int port = 1111;
-            String mess = "recBooks&isbn,author,title,borrowed_by";
+            //String mess = "recBooks&isbn,author,title,borrowed_by";
+            String mess = "addBookFromIsbn&6156165";
             Socket socket = new Socket(ip, port);
+            socket.setSoTimeout(5000); // timeout after 5 sec
             writeMess(socket, mess);
             String response = readMess(socket);
             System.out.println(response);

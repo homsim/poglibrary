@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -28,7 +30,7 @@ public class OpenLibraryAPI {
     private JSONObject books;
     private JSONObject search;
 
-    public OpenLibraryAPI(Isbn isbn) throws IOException, URISyntaxException {
+    public OpenLibraryAPI(Isbn isbn) throws IOException, URISyntaxException, FaultyIsbnException {
         // get the book entry via isbn
         this.search = getJsonSearch(isbn.toString());
 
@@ -112,6 +114,8 @@ public class OpenLibraryAPI {
             fullTitle = title + " - " + subtitle;
         } catch (JSONException ex) {
             // if there is no subtitle, use only the title
+            String logMess = "No subtitle found. Using '" + title + "' as title.";
+            Logger.getLogger("globalLogger").log(Level.INFO, logMess);
             fullTitle = title;
         }
 
@@ -131,7 +135,7 @@ public class OpenLibraryAPI {
         return authors;
     }
 
-    private static Isbn getIsbnJson(JSONObject books) throws IOException, URISyntaxException {
+    private static Isbn getIsbnJson(JSONObject books) throws IOException, URISyntaxException, FaultyIsbnException {
         JSONArray isbnArray = books.getJSONArray("isbn_13");
         Isbn isbn_13 = new Isbn(isbnArray.getString(0), false);
 

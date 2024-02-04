@@ -15,8 +15,11 @@ public class Testing {
                 authors,
                 new Isbn("3423760893")
             );
-            Queries.addBook(book);
-
+            
+            final String dir = System.getProperty("user.home");
+            System.out.println("current dir = " + dir);
+    
+            
             /*
             // read in some isbn's
             Scanner scanner = new Scanner(new File("tests/test-isbn.txt"));

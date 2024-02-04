@@ -64,7 +64,7 @@ public class Requests {
      * @throws SQLException if something went wrong in the execution of the SQL
      *                      query
      */
-    public static int addBookFromIsbn(String isbn) throws SQLException, IOException, URISyntaxException {
+    public static int addBookFromIsbn(String isbn) throws SQLException, IOException, URISyntaxException, FaultyIsbnException {
         OpenLibraryAPI olapi = new OpenLibraryAPI(new Isbn(isbn));
         Book book = olapi.createBook();
         Queries.addBook(book);
@@ -82,7 +82,7 @@ public class Requests {
      * @throws SQLException if something went wrong in the execution of the SQL
      *                      query
      */
-    public static int addBookManually(String title, String authorsStr, String isbn) throws SQLException {
+    public static int addBookManually(String title, String authorsStr, String isbn) throws SQLException, FaultyIsbnException {
         String[] authorsStrArray = Interpreter.interpetArrays(authorsStr);
         Person[] authors = new Person[authorsStrArray.length]; 
         for (int i = 0; i < authorsStrArray.length; i++) {
