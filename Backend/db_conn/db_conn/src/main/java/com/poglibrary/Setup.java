@@ -1,24 +1,35 @@
 package com.poglibrary;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import java.sql.*;
 
 public class Setup {
+    private static String logProps = "db_conn/src/main/java/logs.properties";
+    private static String logDir = System.getProperty("user.home") + "/.poglibrary_logs";
+
     protected Setup() {
         setup();
     }
 
     private static void setup() {
         try {
+            initLogger();
+            createLogDir();
             if (!checkMariaDB()) {
                 installMariaDB();
             } else {
-                Logger.getLogger("globalLogger").log(Level.INFO, "Installation of MariaDB already found. Skipping installation, but continuing initialization of the database. ");
+                Logger.getLogger("globalLogger").log(Level.INFO,
+                        "Installation of MariaDB already found. Skipping installation, but continuing initialization of the database. ");
             }
             createUser();
         } catch (SQLException ex) {
@@ -38,8 +49,8 @@ public class Setup {
                 exStrBld.append(Queries.DB_USER);
                 exStrBld.append("' for existing installation of MariaDB. ");
                 exStrBld.append("Likely, because the root user could not be logged in. ");
-                Logger.getLogger("globalLogger").log(Level.SEVERE, exStrBld.toString());        
-            }            
+                Logger.getLogger("globalLogger").log(Level.SEVERE, exStrBld.toString());
+            }
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger("globalLogger").log(Level.SEVERE, ex.getCause().toString());
         }
@@ -58,6 +69,27 @@ public class Setup {
         return installExists;
     }
 
+    private static void createLogDir() throws IOException {
+        if (!Files.exists(Paths.get(logDir))) {
+            Files.createDirectories(Paths.get(logDir));
+            Logger.getLogger("globalLogger").log(Level.INFO, "Created directory " + logDir);
+        } else {
+            Logger.getLogger("globalLogger").log(Level.INFO, "Log directory " + logDir + " already exists. Proceeding...");
+        }
+    }
+
+
+    private static void initLogger() {
+        try {
+            FileInputStream logConfigFile = new FileInputStream(logProps);
+            LogManager.getLogManager().readConfiguration(logConfigFile);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     private static void createUser() throws SQLException {
         Connection conn = DriverManager.getConnection(Queries.DB_BASE_URL + ":" + Queries.DB_PORT, "root", "");
 
@@ -76,7 +108,7 @@ public class Setup {
     private static void installMariaDB() throws IOException, InterruptedException {
         Logger.getLogger("globalLogger").log(Level.INFO, "Starting installation of MariaDB.");
         execBash("chmod +x ../../../../install.sh"); // not sure if necessary
-        execBash("../../../../install.sh");       // to be written !!!
+        execBash("../../../../install.sh"); // to be written !!!
     }
 
     private static int execBash(String cmd) throws InterruptedException, IOException {
@@ -85,12 +117,11 @@ public class Setup {
         Process process = processBuilder.start();
 
         BufferedReader reader = new BufferedReader(
-            new InputStreamReader(process.getInputStream())
-        );
+                new InputStreamReader(process.getInputStream()));
 
         StringBuilder output = new StringBuilder();
         String line;
-        while ((line =reader.readLine()) != null) {
+        while ((line = reader.readLine()) != null) {
             output.append(line);
         }
         Logger.getLogger("globalLogger").log(Level.INFO, output.toString());
