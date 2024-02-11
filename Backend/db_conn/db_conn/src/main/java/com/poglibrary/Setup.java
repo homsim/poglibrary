@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import java.sql.*;
 
 public class Setup {
-    private static String logProps = "db_conn/src/main/java/logs.properties";
+    private static String logProps = System.getProperty("user.dir") + "/../src/main/java/logs.properties"; // this is only works when starting the jar from the target dir.. not ideal
     private static String logDir = System.getProperty("user.home") + "/.poglibrary_logs";
 
     protected Setup() {
@@ -107,8 +107,9 @@ public class Setup {
 
     private static void installMariaDB() throws IOException, InterruptedException {
         Logger.getLogger("globalLogger").log(Level.INFO, "Starting installation of MariaDB.");
-        execBash("chmod +x ../../../../install.sh"); // not sure if necessary
-        execBash("../../../../install.sh"); // to be written !!!
+        String installFile = "../../../../install.sh";        
+        execBash("chmod +x " + installFile); // not sure if necessary
+        execBash(installFile); // to be written !!!
     }
 
     private static int execBash(String cmd) throws InterruptedException, IOException {
