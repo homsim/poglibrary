@@ -1,10 +1,15 @@
 package com.poglibrary.db_conn.model;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,21 +21,26 @@ import lombok.Setter;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String title;
-    private String authors; // will be changed to user-defined type Person/Author
+
+    @ManyToMany(targetEntity = com.poglibrary.db_conn.model.Author.class)
+    @JoinTable(name = "author_book", 
+        joinColumns = @JoinColumn(name = "BookId"), 
+        inverseJoinColumns = @JoinColumn(name = "authorId"))
+    private Set<String> authors; // will be changed to user-defined type Person/Author
+
     private String isbn; // will be changed to user-defined type Isbn
-    @Column(nullable = false)
-    private boolean borrowed;   // make this such that it is false if borrower_id is null
+
     @Column(name = "borrowerId")
     private Long borrowerId;
 
-    public Book(String title, String authors, String isbn) {
+    public Book(String title, Set<String> authors, String isbn) {
         this.title = title;
         this.authors = authors;
         this.isbn = isbn;
-        this.borrowed = false;
         this.borrowerId = null;
     }
 
