@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-DbConnApplication<db_conn>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.poglibrary.db_conn.DbConnApplication",
+            "projectName": "db_conn",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+package com.poglibrary.db_conn.model;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor  // not sure if needed
+@Entity
+public class Borrower extends Person {
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "borrowerId", referencedColumnName = "id")
+    Set<Book> borrowedBooks = new HashSet<>();
+}
