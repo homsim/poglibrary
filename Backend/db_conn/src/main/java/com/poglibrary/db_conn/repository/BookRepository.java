@@ -7,7 +7,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.poglibrary.db_conn.model.Book;
 
-@RepositoryRestResource(collectionResourceRel = "books", path = "books")
+@RepositoryRestResource(collectionResourceRel = "book", path = "book")
 public interface BookRepository extends CrudRepository<Book, Long> {
     Book findById(long id);
 

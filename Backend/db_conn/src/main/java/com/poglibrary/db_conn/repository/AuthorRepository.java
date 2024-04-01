@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import com.poglibrary.db_conn.model.Author;
 
 
-@RepositoryRestResource(collectionResourceRel = "authors", path = "authors")
+@RepositoryRestResource(collectionResourceRel = "author", path = "author")
 public interface AuthorRepository extends CrudRepository<Author, Long> {
     Author findById(long id);
     
