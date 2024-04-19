@@ -2,13 +2,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Spring Boot-DbConnApplication<db_conn>",
+            "name": "DbConnApplication",
             "request": "launch",
-            "cwd": "${workspaceFolder}",
             "mainClass": "com.poglibrary.db_conn.DbConnApplication",
-            "projectName": "db_conn",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "projectName": "db_conn"
         }
     ]
 }

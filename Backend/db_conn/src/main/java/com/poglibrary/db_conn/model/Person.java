@@ -52,14 +52,7 @@ public abstract class Person {
     public String getFormal() {
         // get formal writing of a persons name,
         // i.e. "Mustermann, Max"
-        String str;
-        StringBuilder str_bld = new StringBuilder();
-        str_bld.append(this.lastname);
-        str_bld.append(", ");
-        str_bld.append(this.firstname);
-        str = str_bld.toString();
-
-        return str;
+        return this.lastname + ", " + this.firstname;
     }
 
     @Override

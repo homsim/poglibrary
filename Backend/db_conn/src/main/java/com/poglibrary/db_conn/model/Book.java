@@ -22,25 +22,28 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
+    @Column(name = "isbn", nullable = false, unique = true)
+    private String isbn;
+
+    @Column(name = "title")
     private String title;
 
     @ManyToMany(targetEntity = com.poglibrary.db_conn.model.Author.class)
     @JoinTable(name = "author_book", 
-        joinColumns = @JoinColumn(name = "BookId"), 
+        joinColumns = @JoinColumn(name = "bookId"), 
         inverseJoinColumns = @JoinColumn(name = "authorId"))
-    private Set<String> authors; // will be changed to user-defined type Person/Author
-
-    private String isbn; // will be changed to user-defined type Isbn
+    private Set<Author> authors; 
 
     @Column(name = "borrowerId")
     private Long borrowerId;
 
-    public Book(String title, Set<String> authors, String isbn) {
+    public Book(String title, Set<Author> authors, String isbn) {
+        this.isbn = isbn;
         this.title = title;
         this.authors = authors;
-        this.isbn = isbn;
         this.borrowerId = null;
     }
 

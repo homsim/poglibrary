@@ -19,4 +19,8 @@ public class Borrower extends Person {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "borrowerId", referencedColumnName = "id")
     Set<Book> borrowedBooks = new HashSet<>();
+
+    public Borrower(String name) {
+        super(name);
+    }
 }
