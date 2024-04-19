@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import com.poglibrary.db_conn.model.Borrower;
 
 
-@RepositoryRestResource(collectionResourceRel = "borrower", path = "borrower")
+@RepositoryRestResource(collectionResourceRel = "borrowers", path = "borrowers")
 public interface BorrowerRepository extends CrudRepository<Borrower, Long> {
     Borrower findById(long id);
     

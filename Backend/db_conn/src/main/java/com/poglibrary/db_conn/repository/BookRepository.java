@@ -7,14 +7,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.poglibrary.db_conn.model.Book;
+import com.poglibrary.db_conn.model.projection.BookProjection;
 
-@RepositoryRestResource(collectionResourceRel = "book", path = "book")
+@RepositoryRestResource(collectionResourceRel = "books", path = "books", excerptProjection = BookProjection.class)
 public interface BookRepository extends CrudRepository<Book, Long> {
     Book findById(long id);
 
     List<Book> findByTitle(@Param("title") String title);
 
-    //List<Book> findByAuthors(@Param("authors") List<String> authors);
+    // List<Book> findByAuthors(@Param("authors") List<String> authors);
 
     List<Book> findByIsbn(@Param("isbn") String isbn);
 

@@ -1,5 +1,6 @@
 package com.poglibrary.db_conn.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -32,19 +33,17 @@ public class Book {
     private String title;
 
     @ManyToMany(targetEntity = com.poglibrary.db_conn.model.Author.class)
-    @JoinTable(name = "author_book", 
-        joinColumns = @JoinColumn(name = "bookId"), 
-        inverseJoinColumns = @JoinColumn(name = "authorId"))
-    private Set<Author> authors; 
+    @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "bookId"), inverseJoinColumns = @JoinColumn(name = "authorId"))
+    private Set<Author> authors;
 
     @Column(name = "borrowerId")
-    private Long borrowerId;
+    private Long borrower;
 
     public Book(String title, Set<Author> authors, String isbn) {
         this.isbn = isbn;
         this.title = title;
         this.authors = authors;
-        this.borrowerId = null;
+        this.borrower = null;
     }
 
     @Override
@@ -53,5 +52,17 @@ public class Book {
         return String.format(
                 "Customer[id=%d, title='%s', author(s)='%s', isbn=%s]",
                 id, title, authors, isbn);
+    }
+
+    public Set<String> getAuthorsName() {
+        Set<String> authors = new HashSet<String>();
+        if (this.authors != null) {
+            for (Author author : this.authors) {
+                authors.add(author.getFormal());
+            }
+            return authors;
+        } else {
+            return new HashSet<String>();
+        }
     }
 }
