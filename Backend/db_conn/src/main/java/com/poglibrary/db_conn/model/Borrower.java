@@ -5,7 +5,6 @@ import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +12,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor  // not sure if needed
+@NoArgsConstructor
 @Entity
 public class Borrower extends Person {
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "borrowerId", referencedColumnName = "id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "borrower")
     Set<Book> borrowedBooks = new HashSet<>();
 
     public Borrower(String name) {

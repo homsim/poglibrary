@@ -15,5 +15,8 @@ public interface BookProjection {
     String getTitle();
 
     @JsonProperty("authors")
-    Set<String> getAuthorsName();
+    Set<String> getAuthorsFormal();
+
+    @JsonProperty("borrower")
+    String getBorrowerFormal();
 }

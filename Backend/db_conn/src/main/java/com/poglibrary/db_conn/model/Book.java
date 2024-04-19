@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,8 +37,9 @@ public class Book {
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "bookId"), inverseJoinColumns = @JoinColumn(name = "authorId"))
     private Set<Author> authors;
 
-    @Column(name = "borrowerId")
-    private Long borrower;
+    @ManyToOne
+    @JoinColumn(name = "borrowerId")
+    private Borrower borrower;
 
     public Book(String title, Set<Author> authors, String isbn) {
         this.isbn = isbn;
@@ -50,11 +52,11 @@ public class Book {
     public String toString() {
         // arbitrary
         return String.format(
-                "Customer[id=%d, title='%s', author(s)='%s', isbn=%s]",
+                "Book[id=%d, title='%s', author(s)='%s', isbn=%s]",
                 id, title, authors, isbn);
     }
 
-    public Set<String> getAuthorsName() {
+    public Set<String> getAuthorsFormal() {
         Set<String> authors = new HashSet<String>();
         if (this.authors != null) {
             for (Author author : this.authors) {
@@ -63,6 +65,14 @@ public class Book {
             return authors;
         } else {
             return new HashSet<String>();
+        }
+    }
+
+    public String getBorrowerFormal() {
+        if (this.borrower != null) {
+            return this.borrower.getFormal();
+        } else {
+            return null;
         }
     }
 }
