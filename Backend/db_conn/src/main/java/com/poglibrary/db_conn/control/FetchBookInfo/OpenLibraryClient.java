@@ -14,8 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.poglibrary.db_conn.model.Author;
-
 import lombok.Getter;
 
 @Getter
