@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.core.annotation.HandleAfterDelete;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ import com.poglibrary.db_conn.model.Book;
 import com.poglibrary.db_conn.repository.AuthorRepository;
 import com.poglibrary.db_conn.repository.BookRepository;
 
-import jakarta.transaction.Transactional;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
@@ -35,7 +36,6 @@ public class BookEventHandler {
 
     @HandleBeforeCreate
     public void beforeCreate(Book book) throws IOException, URISyntaxException {
-        // format isbn
         String isbnFormatted = book.getIsbn().replace("-", "");
         book.setIsbn(isbnFormatted);
 
@@ -71,4 +71,15 @@ public class BookEventHandler {
             }
         }
     }
+    
+    @HandleAfterDelete
+    public void cleanupAuthors(Book book) {
+        // delete all authors of the deleted book, that don't have any more writtenBooks 
+        for (Author author : book.getAuthors()) {
+            if (author.getWrittenBooks() == null || author.getWrittenBooks().size() == 0) {
+                authorRepository.deleteById(author.getId());
+            }
+        }
+    }
+
 }
