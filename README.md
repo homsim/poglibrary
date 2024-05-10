@@ -2,42 +2,27 @@
 
 The general idea is to build a library system that archives all owned books, the affiliation and/or who has borrowed a book.
 
-# Desired features
+# Install/run the backend
 
-- Scaning books saves them in a library
-- Checking books in and and out adds a borrower
-    - should be as convenient as possible. Best case would be an Android App that handles the Frontend
-        - Either: Scan books' barcode; Scan books' ISBN; Recognise book via image recognition (ML)
-        - At minimum: Enter ISBN manually
-- Deleting books from the library
-- Access informations about the books and borrower
+The build process is handle by `maven`. From within the projects root directory, run:
 
-# Project structure
+```
+mvn -f backend/db_conn/pom.xml compile
+```
 
-## First draft
+To run without re-compiling, run:
 
-### Frontend: Android-App (PogLibrary) in Kotlin
+```
+mvn -f backend/db_conn/pom.xml spring-boot:run
+```
 
-- Access the library archive
-- See who borrowed the book and when
-- Use camera in some way (see above) to access books
+# Development plan
 
-### Backend: Java-Script managing a database
-
-- JDBC (Java DataBase Connectivity) communicates with local database (local to the JVM)
-- Manages data integrity, i.e. checks ISBN
-- Finds book informations from some internet database and fills the database automatically from only the ISBN
-
-### Datebase: MySQL/mariaDB
-
-**Tables:**
-(The equivalent dataclasses in Java will be similar)
-
-- *Libaries* (in case the user wants more structure)
-- *Books*
-- *Persons* (to store borrowers)
-
-### Hardware:
-
-- Raspberry Pi with necessary network connection
-- Some Android Phone/Tablet
+- [X] Conceptualize the basics
+- [X] Set up the basic framework of the DB
+- [X] Sketch out the spring-boot application
+- [ ] Javadoc for the API
+- [ ] Configure it such that the database gets initialized automatically (create user etc)
+- [ ] Set up a Raspi for network access and make it secure
+- [ ] Write the app -> kotlin using Jetpack Compose
+- [ ] Think about deployment: Automatic deployment and build via git vs Docker
