@@ -20,10 +20,8 @@ mvn -f backend/db_conn/pom.xml spring-boot:run
 
 - [X] Conceptualize the basics
 - [X] Set up the basic framework of the DB
-- [X] Sketch out the Java-DB-interface
-- [X] Implement a socket using `java.net.Socket` to enable external access to the interface -> Interpretation of requested methods is done using `java.lang.reflect`
-- [ ] Build the mainframe, which automatically installs, initializes and sets up a new DB on a new device
-- [ ] Set it up on a Raspi
-- [ ] Research network stuff, set up the Raspi for network access and make it secure
-- [ ] Write the App on my old Pixel 4a or Lenovo tablet
+- [X] Sketch out the spring-boot application
+- [ ] Configure it such that the database gets initialized automatically (create user etc)
+- [ ] Set up a Raspi for network access and make it secure
+- [ ] Write the app -> kotlin using Jetpack Compose
 - [ ] Think about deployment: Automatic deployment and build via git vs Docker
