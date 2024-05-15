@@ -9,6 +9,7 @@ import com.poglibrary.db_conn.model.Book;
 
 @Projection(name = "bookProjection", types = { Book.class })
 public interface BookProjection {
+    Long getId();
 
     String getIsbn();
 
