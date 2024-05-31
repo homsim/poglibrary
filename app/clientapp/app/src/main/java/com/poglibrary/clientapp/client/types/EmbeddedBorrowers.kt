@@ -3,5 +3,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EmbeddedBorrowers(
-    val borrowers: List<Borrower?>
+    val borrowers: List<Borrower>? = null
 )

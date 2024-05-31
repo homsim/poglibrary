@@ -3,5 +3,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EmbeddedBooks(
-    val books: List<Book?>
+    val books: List<Book>? = null
 )
