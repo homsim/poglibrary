@@ -4,8 +4,10 @@ import java.util.Set;
 
 import org.springframework.data.rest.core.config.Projection;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.poglibrary.db_conn.model.Author;
 import com.poglibrary.db_conn.model.Book;
+import com.poglibrary.db_conn.model.Borrower;
+
 
 @Projection(name = "bookProjection", types = { Book.class })
 public interface BookProjection {
@@ -15,9 +17,7 @@ public interface BookProjection {
 
     String getTitle();
 
-    @JsonProperty("authors")
-    Set<String> getAuthorsFormal();
+    Set<Author> getAuthors();
 
-    @JsonProperty("borrower")
-    String getBorrowerFormal();
+    Borrower getBorrower();
 }
