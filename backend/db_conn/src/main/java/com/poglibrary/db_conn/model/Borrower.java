@@ -16,7 +16,7 @@ import lombok.Setter;
 @Entity
 public class Borrower extends Person {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "borrower")
-    Set<Book> borrowedBooks = new HashSet<>();
+    Set<Book> books = new HashSet<>();
 
     public Borrower(String name) {
         super(name);
