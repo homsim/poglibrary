@@ -76,7 +76,7 @@ public class BookEventHandler {
     public void cleanupAuthors(Book book) {
         // delete all authors of the deleted book, that don't have any more writtenBooks 
         for (Author author : book.getAuthors()) {
-            if (author.getWrittenBooks() == null || author.getWrittenBooks().size() == 0) {
+            if (author.getBooks() == null || author.getBooks().size() == 0) {
                 authorRepository.deleteById(author.getId());
             }
         }

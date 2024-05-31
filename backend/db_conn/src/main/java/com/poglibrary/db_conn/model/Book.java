@@ -56,24 +56,4 @@ public class Book {
                 "Book[id=%d, title='%s', author(s)='%s', isbn=%s]",
                 id, title, authors, isbn);
     }
-
-    public Set<String> getAuthorsFormal() {
-        Set<String> authors = new HashSet<String>();
-        if (this.authors != null) {
-            for (Author author : this.authors) {
-                authors.add(author.getFormal());
-            }
-            return authors;
-        } else {
-            return new HashSet<String>();
-        }
-    }
-
-    public String getBorrowerFormal() {
-        if (this.borrower != null) {
-            return this.borrower.getFormal();
-        } else {
-            return null;
-        }
-    }
 }

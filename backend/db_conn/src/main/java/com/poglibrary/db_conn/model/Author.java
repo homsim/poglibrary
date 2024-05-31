@@ -20,7 +20,7 @@ import lombok.Setter;
 })
 public class Author extends Person {
     @ManyToMany(mappedBy = "authors")
-    Set<Book> writtenBooks = new HashSet<>();
+    Set<Book> books = new HashSet<>();
 
     public Author(String name) {
         super(name);
