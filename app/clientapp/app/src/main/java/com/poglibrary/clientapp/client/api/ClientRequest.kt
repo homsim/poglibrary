@@ -3,6 +3,7 @@ package com.poglibrary.clientapp.client.api
 //import android.util.Log
 import com.poglibrary.clientapp.client.types.Response
 import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
@@ -53,12 +54,23 @@ abstract class ClientRequest {
         }
     }
 
+    /**
+     * Sends DELETE request on an endpoint's entity . Endpoint depends on the derived class from which this method is called.
+     *
+     * @param id the id of the database entity
+     * @return Status code of the http response
+     */
+    suspend fun delete(id: Int) : Int {
+        val httpResponse: HttpResponse = client.delete("$address/$endpoint/$id")
+        return httpResponse.status.value
+    }
+
     // should return the HttpStatusCode instead of Unit
     abstract suspend fun post() : Unit
     abstract suspend fun patch() : Unit
 
-    // can be implemented here
-    //abstract suspend fun delete(id: Int) : Unit
+    // can be implemented here,
+    // but I do not know yet how to do this in Spring Data REST
     //abstract suspend fun delete(ids: List<Int>): Unit
     //abstract suspend fun deleteAll() : Unit
 }
