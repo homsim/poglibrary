@@ -5,18 +5,24 @@ import com.poglibrary.clientapp.client.types.Response
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
 
 
 abstract class ClientRequest {
     /*
     TODO:
-    Find a proper way to handle user login etc. (a mock login is also possible for now,
-    because it will only be used in a local network anyway)
+     - Find a proper way to handle user login etc. (a mock login is also possible for now,
+     because it will only be used in a local network anyway)
+     - Write Unit/Integration tests for the API methods -> how to handle automatic population?
      */
-    val address : String = "http://10.0.2.2:8080"
+    var address : String = "http://10.0.2.2:8080" // this really should not be a var, but is now for unit tests
     val client : HttpClient = HttpClient()
     abstract val endpoint : String
     abstract val projection : String
@@ -46,7 +52,7 @@ abstract class ClientRequest {
      *
      * @return [List<T>] of database objects of type [T]
      */
-    suspend inline fun <reified  T> getAll(): T? {
+    suspend inline fun <reified T> getAll(): T? {
         val httpResponse: HttpResponse = client.get("$address/$endpoint")
         return when (httpResponse.status.value) {
             in 200 .. 299 -> Json.decodeFromString<Response<T>>(httpResponse.bodyAsText()).embedded
@@ -65,9 +71,17 @@ abstract class ClientRequest {
         return httpResponse.status.value
     }
 
+    suspend inline fun <reified T> post(entity: T): Int {
+        val httpResponse: HttpResponse = client.post("$address/$endpoint") {
+            contentType(ContentType.Application.Json)
+            setBody(Json.encodeToString(entity))
+        }
+        return httpResponse.status.value
+    }
+
     // should return the HttpStatusCode instead of Unit
-    abstract suspend fun post() : Unit
     abstract suspend fun patch() : Unit
+
 
     // can be implemented here,
     // but I do not know yet how to do this in Spring Data REST

@@ -58,6 +58,9 @@ dependencies {
     implementation(libs.ktor.client.okhttp)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    // for unit tests
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+
 
     implementation("com.google.code.gson:gson:2.10.1")
     // or
