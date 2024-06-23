@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3b29a226-ecc3-4329-8f8d-13491b1a64bc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/DbConnApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/control/BookEventHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/control/FetchBookInfo/OpenLibraryClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/handler/DefaultExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/handler/UserExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/handler/exceptions/FaultyIsbnException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/model/Author.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/model/Book.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/model/Borrower.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/model/Person.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/model/projection/BookProjection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/repository/AuthorRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/repository/BookRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/repository/BorrowerRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/java/com/poglibrary/db_conn/repository/config/RestConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db_conn/src/test/java/com/poglibrary/db_conn/DbConnApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/app/clientapp">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/backend/backend">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/backend/backend">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="poglibrary" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="kotlin-spring" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2iHPzLR0rfmPe9d6J6DUIHm1Fig" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.backend [:DbConnApplication.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.backend [:PogLibrary.main()].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;backend-gradle&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/simon/projects/general_projects/poglibrary/backend/backend/settings.gradle.kts&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;kotlin-gradle-user-dirs&quot;: [
+      &quot;/home/simon/.gradle&quot;
+    ]
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="PogLibrary" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.poglibrary.backend.PogLibrary" />
+      <module name="backend.main" />
+      <option name="PROGRAM_PARAMETERS" value="--warning-mode all" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.poglibrary.backend.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.PogLibrary" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3b29a226-ecc3-4329-8f8d-13491b1a64bc" name="Changes" comment="" />
+      <created>1719144790830</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1719144790830</updated>
+    </task>
+    <servers />
+  </component>
+</project>
