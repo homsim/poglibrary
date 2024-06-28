@@ -1,8 +1,8 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.3.1"
-    id("io.spring.dependency-management") version "1.1.5"
-    id("org.asciidoctor.jvm.convert") version "3.3.2"
+    alias(libsBackend.plugins.springBoot)
+    alias(libsBackend.plugins.springDependencyManagement)
+    alias(libsBackend.plugins.asciidoctor)
 }
 
 /*
@@ -25,17 +25,16 @@ configurations {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-rest")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation(libsBackend.spring.web)
+    implementation(libsBackend.spring.data.jpa)
+    implementation(libsBackend.spring.data.rest)
+    implementation(libsBackend.spring.test)
+    implementation(libsBackend.spring.restdocs.mockmvc)
     // https://mvnrepository.com/artifact/org.json/json
-    implementation("org.json:json:20240303")
-    compileOnly("org.projectlombok:lombok")
-    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-    annotationProcessor("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation(libsBackend.org.json)
+    compileOnly(libsBackend.lombok)
+    runtimeOnly(libsBackend.mariadb.java.client)
+    testRuntimeOnly(libsBackend.junit.platform.launcher)
 }
 
 

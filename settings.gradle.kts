@@ -17,6 +17,14 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("libsApp") {
+            from(files("app/gradle/libs.versions.app.toml"))
+        }
+        create("libsBackend") {
+            from(files("backend/gradle/libs.versions.backend.toml"))
+        }
+    }
 }
 
 rootProject.name = "PogLibrary"

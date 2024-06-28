@@ -55,58 +55,58 @@ android {
 /* old
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libsApp.androidx.core.ktx)
+    implementation(libsApp.androidx.lifecycle.runtime.ktx)
+    implementation(libsApp.androidx.activity.compose)
+    implementation(platform(libsApp.androidx.compose.bom))
+    implementation(libsApp.androidx.ui)
+    implementation(libsApp.androidx.ui.graphics)
+    implementation(libsApp.androidx.ui.tooling.preview)
+    implementation(libsApp.androidx.material3)
+    testImplementation(libsApp.junit)
+    androidTestImplementation(libsApp.androidx.junit)
+    androidTestImplementation(libsApp.androidx.espresso.core)
+    androidTestImplementation(platform(libsApp.androidx.compose.bom))
+    androidTestImplementation(libsApp.androidx.ui.test.junit4)
+    debugImplementation(libsApp.androidx.ui.tooling)
+    debugImplementation(libsApp.androidx.ui.test.manifest)
 }
 */
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.cio)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libsApp.androidx.core.ktx)
+    implementation(libsApp.androidx.appcompat)
+    implementation(libsApp.material)
+    implementation(libsApp.androidx.constraintlayout)
+    implementation(libsApp.androidx.navigation.fragment.ktx)
+    implementation(libsApp.androidx.navigation.ui.ktx)
+    testImplementation(libsApp.junit)
+    androidTestImplementation(libsApp.androidx.junit)
+    androidTestImplementation(libsApp.androidx.espresso.core)
+    implementation(libsApp.ktor.client.core)
+    implementation(libsApp.ktor.client.cio)
+    implementation(libsApp.ktor.client.okhttp)
+    implementation(libsApp.kotlinx.coroutines.core)
+    implementation(libsApp.kotlinx.coroutines.android)
+    implementation(libsApp.kotlinx.serialization.json)
 
     implementation(kotlin("reflect"))
 
-    androidTestImplementation(libs.androidx.compose.bom) // not sure if this is needed
+    androidTestImplementation(libsApp.androidx.compose.bom) // not sure if this is needed
     // for unit tests
-    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libsApp.kotlinx.coroutines.test)
     // UI Tests
-    androidTestImplementation(libs.androidx.ui.test.manifest)
-    debugImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libsApp.androidx.ui.test.manifest)
+    debugImplementation(libsApp.androidx.ui.test.junit4)
 
-    implementation(libs.androidx.compose.bom)
-    implementation(libs.androidx.compose.material3)
+    implementation(libsApp.androidx.compose.bom)
+    implementation(libsApp.androidx.compose.material3)
 
-    implementation(libs.androidx.ui.tooling.preview)
-    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libsApp.androidx.ui.tooling.preview)
+    debugImplementation(libsApp.androidx.ui.tooling)
 
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libsApp.androidx.activity.compose)
+    implementation(libsApp.androidx.lifecycle.runtime.ktx)
 
 }

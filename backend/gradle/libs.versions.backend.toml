@@ -1,0 +1,22 @@
+[versions]
+spring-boot = "3.3.1"
+springDependencyManagement = "1.1.5"
+asciidoctor = "3.3.2"
+json = "20240303"
+
+[libraries]
+org-json = { group = "org.json", name = "json", version.ref = "json"}
+spring-web = { group = "org.springframework.boot", name = "spring-boot-starter-web" }
+spring-data-jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa" }
+spring-data-rest = { group = "org.springframework.boot", name = "spring-boot-starter-data-rest" }
+spring-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
+spring-restdocs-mockmvc = { group = "org.springframework.restdocs", name = "spring-restdocs-mockmvc" }
+lombok = { group = "org.projectlombok", name = "lombok" }
+mariadb-java-client = { group = "org.mariadb.jdbc", name = "mariadb-java-client"}
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher"}
+
+[plugins]
+springBoot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+springDependencyManagement = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+asciidoctor = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor" }
+
