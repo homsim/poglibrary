@@ -2,7 +2,7 @@
 ## Generals
 
 - [ ] Add tests (`Mock` ?) especially for the OpenLibraryAPI, because it will probably change over time
-- [ ] Configure user settings, login and cookies
+- [X] Configure user settings, login and cookies
 - [ ] Write an API documentation (`javadoc` ?)
 - [ ] Add Logging
 - [ ] Configure a test environment that is automatically populated at startup
