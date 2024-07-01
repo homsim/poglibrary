@@ -30,11 +30,15 @@ dependencies {
     implementation(libsBackend.spring.data.rest)
     implementation(libsBackend.spring.test)
     implementation(libsBackend.spring.restdocs.mockmvc)
+    implementation(libsBackend.spring.mvc)
+    implementation(libsBackend.spring.security)
+    implementation(libsBackend.thymeleaf.springsecurity)
     // https://mvnrepository.com/artifact/org.json/json
     implementation(libsBackend.org.json)
     compileOnly(libsBackend.lombok)
     runtimeOnly(libsBackend.mariadb.java.client)
     testRuntimeOnly(libsBackend.junit.platform.launcher)
+    testImplementation(libsBackend.spring.security.test)
     annotationProcessor(libsBackend.lombok)
 }
 
