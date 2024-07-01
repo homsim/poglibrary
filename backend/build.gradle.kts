@@ -35,6 +35,7 @@ dependencies {
     compileOnly(libsBackend.lombok)
     runtimeOnly(libsBackend.mariadb.java.client)
     testRuntimeOnly(libsBackend.junit.platform.launcher)
+    annotationProcessor(libsBackend.lombok)
 }
 
 
