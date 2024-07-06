@@ -1,118 +1,115 @@
 package com.poglibrary.clientapp.client.api
 
 import com.poglibrary.clientapp.client.types.Author
-import com.poglibrary.clientapp.client.types.Links
-import com.poglibrary.clientapp.client.types.Link
-import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
+import com.poglibrary.clientapp.client.types.EmbeddedAuthors
+import com.poglibrary.clientapp.client.types.Response
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.respond
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.headersOf
+import io.ktor.utils.io.ByteReadChannel
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
+import org.junit.Assert
 import org.junit.Test
+import java.io.File
 
-/**
- * These tests require a fresh backend build, such that the IDs start with 1.
- * -> Is this the correct way to perform REST API client unit tests???
- */
 class AuthorRequestUnitTest {
-    @Test
-    fun postFrankHerbert() = runTest {
-        val author = Author(
-            "Frank",
-            "Herbert")
-        val authorRequest = AuthorRequest()
-        // have to override this here, because the ip of the android emulator is different from localhost
-        authorRequest.address = "http://localhost:8080"
-        val response: Int = authorRequest.post(author)
+    // assumes project root to be ~/poglibrary/app
+    private val testDataDir: String = "src/test/res/client/api/"
+    private fun getTestData(testDataFile: String): String = File(testDataDir + testDataFile).readText();
 
-        assertEquals(
-            201,
-            response
-        )
+    @Test
+    fun getAllTest() {
+        val testData: String = getTestData("AuthorGetAll.json")
+        runBlocking {
+            val mockEngine = MockEngine { _ ->
+                respond(
+                    content = ByteReadChannel(testData),
+                    status = HttpStatusCode.OK,
+                    headers = headersOf(HttpHeaders.ContentType, "application/json")
+                )
+            }
+            val authorRequest = AuthorRequest(mockEngine)
+
+            Assert.assertEquals(
+                Json.decodeFromString<Response<EmbeddedAuthors>>(testData).embedded,
+                authorRequest.getAll<EmbeddedAuthors>()
+            )
+        }
     }
 
     @Test
-    fun postBrianHerbert() = runTest {
-        val author = Author(
-            "Brian",
-            "Herbert")
-        val authorRequest = AuthorRequest()
-        // have to override this here, because the ip of the android emulator is different from localhost
-        authorRequest.address = "http://localhost:8080"
-        val response: Int = authorRequest.post(author)
+    fun getTest() {
+        val testData: String = getTestData("AuthorGet.json")
+        runBlocking {
+            val mockEngine = MockEngine { _ ->
+                respond(
+                    content = ByteReadChannel(testData),
+                    status = HttpStatusCode.OK,
+                    headers = headersOf(HttpHeaders.ContentType, "application/json")
+                )
+            }
+            val authorRequest = AuthorRequest(mockEngine)
 
-        assertEquals(
-            201,
-            response
-        )
+            Assert.assertEquals(
+                Json.decodeFromString<Author>(testData),
+                authorRequest.get<Author>(1)
+            )
+        }
     }
 
     @Test
-    fun getFrankHerbert() = runTest {
-        val author = Author(
-            "Frank",
-            "Herbert",
-            "Herbert, Frank",
-            null,
-            1,
-            null,
-            Links(
-                Link(
-                    "http://localhost:8080/authors/1",
-                    null),
-                null,
-                null,
-                Link(
-                    "http://localhost:8080/authors/1/books{?projection}",
-                    true),
-                null,
-                null,
-                Link(
-                    "http://localhost:8080/authors/1",
-                    null),
-                null)
-        )
-        val authorRequest = AuthorRequest()
-        // have to override this here, because the ip of the android emulator is different from localhost
-        authorRequest.address = "http://localhost:8080"
-        val response = authorRequest.get<Author>(1)
+    fun postTest() {
+        // return body is the same as for a GET. Technically, the testData is not needed.
+        val testData: String = getTestData("AuthorGet.json")
+        runBlocking {
+            val mockEngine = MockEngine { _ ->
+                respond(
+                    content = ByteReadChannel(testData),
+                    status = HttpStatusCode.Created,
+                    headers = headersOf(HttpHeaders.ContentType, "application/json")
+                )
+            }
+            val authorRequest = AuthorRequest(mockEngine)
 
-        assertEquals(
-            author.toString(),
-            response.toString()
-        )
+            val author = Author(
+                "Frank",
+                "Herbert"
+            )
+
+            Assert.assertEquals(
+                201,
+                authorRequest.post<Author>(author)
+            )
+        }
     }
 
     @Test
-    fun getBrianHerbert() = runTest {
-        val author = Author(
-            "Brian",
-            "Herbert",
-            "Herbert, Brian",
-            null,
-            2,
-            null,
-            Links(
-                Link(
-                    "http://localhost:8080/authors/2",
-                    null),
-                null,
-                null,
-                Link(
-                    "http://localhost:8080/authors/2/books{?projection}",
-                    true),
-                null,
-                null,
-                Link(
-                    "http://localhost:8080/authors/2",
-                    null),
-                null)
-        )
-        val authorRequest = AuthorRequest()
-        // have to override this here, because the ip of the android emulator is different from localhost
-        authorRequest.address = "http://localhost:8080"
-        val response = authorRequest.get<Author>(2)
+    fun patchTest() {
+        // return body is the same as for a GET.
+        val testData: String = getTestData("AuthorGetPatched.json")
+        runBlocking {
+            val mockEngine = MockEngine { _ ->
+                respond(
+                    content = ByteReadChannel(testData),
+                    status = HttpStatusCode.OK,
+                    headers = headersOf(HttpHeaders.ContentType, "application/json")
+                )
+            }
+            val authorRequest = AuthorRequest(mockEngine)
 
-        assertEquals(
-            author.toString(),
-            response.toString()
-        )
+            val author = Author(
+                "Franklin",
+            )
+
+            Assert.assertEquals(
+                Json.decodeFromString<Author>(testData),
+                authorRequest.patch<Author>(1, author)
+            )
+        }
+
     }
 }

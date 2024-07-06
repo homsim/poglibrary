@@ -1,0 +1,35 @@
+{
+  "_embedded": {
+    "authors": [
+      {
+        "id": 1,
+        "firstname": "Frank",
+        "lastname": "Herbert",
+        "formal": "Herbert, Frank",
+        "_links": {
+          "self": {
+            "href": "http://localhost:8080/authors/1"
+          },
+          "author": {
+            "href": "http://localhost:8080/authors/1"
+          },
+          "books": {
+            "href": "http://localhost:8080/authors/1/books{?projection}",
+            "templated": true
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/authors"
+    },
+    "profile": {
+      "href": "http://localhost:8080/profile/authors"
+    },
+    "search": {
+      "href": "http://localhost:8080/authors/search"
+    }
+  }
+}

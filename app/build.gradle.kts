@@ -96,6 +96,8 @@ dependencies {
     androidTestImplementation(libsApp.androidx.compose.bom) // not sure if this is needed
     // for unit tests
     testImplementation(libsApp.kotlinx.coroutines.test)
+    testImplementation(libsApp.ktor.client.mock)
+    testImplementation(libsApp.androidx.compose.junit4)
     // UI Tests
     androidTestImplementation(libsApp.androidx.ui.test.manifest)
     debugImplementation(libsApp.androidx.ui.test.junit4)

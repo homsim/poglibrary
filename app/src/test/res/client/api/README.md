@@ -1,0 +1,2 @@
+The content of this directory holds API responses of the backend as `.json`-files. The idea is to include a postman project that includes a folder which can be run regularly to automatically write all responses to a file. The file will then be split into separate files using some script to serve as regular update on the backend's status.
+This has all still to be done. It would be best to execute the split-script before each run of the unit tests.
