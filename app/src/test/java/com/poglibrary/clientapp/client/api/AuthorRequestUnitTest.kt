@@ -5,7 +5,6 @@ import com.poglibrary.clientapp.client.types.EmbeddedAuthors
 import com.poglibrary.clientapp.client.types.Response
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
