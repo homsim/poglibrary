@@ -1,0 +1,48 @@
+{
+  "id": 1,
+  "firstname": "Frank",
+  "lastname": "Herbert",
+  "formal": "Herbert, Frank",
+  "_embedded": {
+    "books": [
+      {
+        "title": "Der Wüstenplanet - Roman",
+        "id": 1,
+        "isbn": "9783453317178",
+        "authors": [
+          {
+            "id": 1,
+            "firstname": "Frank",
+            "lastname": "Herbert",
+            "formal": "Herbert, Frank"
+          }
+        ],
+        "borrower": null,
+        "_links": {
+          "authors": {
+            "href": "http://localhost:8080/books/1/authors"
+          },
+          "borrower": {
+            "href": "http://localhost:8080/books/1/borrower"
+          },
+          "self": {
+            "href": "http://localhost:8080/books/1{?projection}",
+            "templated": true
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/authors/1"
+    },
+    "author": {
+      "href": "http://localhost:8080/authors/1"
+    },
+    "books": {
+      "href": "http://localhost:8080/authors/1/books{?projection}",
+      "templated": true
+    }
+  }
+}

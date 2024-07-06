@@ -1,11 +1,14 @@
 package com.poglibrary.clientapp.client.api
 
-class AuthorRequest : ClientRequest() {
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.cio.CIO
+
+class AuthorRequest(engine: HttpClientEngine = CIO.create()) : ClientRequest(engine) {
     override val endpoint: String = "authors"
     override val projection: String = ""
 
-    override suspend fun patch() {
-        TODO("Not yet implemented")
-    }
-
+    /* Note:
+     * The AuthorRequest.delete() method is not usable. It will fail with a foreign
+     * key constraint error...
+     */
 }

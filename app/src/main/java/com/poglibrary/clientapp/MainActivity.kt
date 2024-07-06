@@ -33,7 +33,8 @@ class MainActivity : ComponentActivity() {
 
                             //BookRequest().get<Book>(1).toString()
                             //AuthorRequest().get<Author>(1).toString()
-                            BorrowerRequest().get<Borrower>(1).toString()
+                            //BorrowerRequest().get<Borrower>(1).toString()
+                            "..."
                         } catch (e: Exception) {
                             e.localizedMessage ?: "error"
                         }
