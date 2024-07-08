@@ -75,17 +75,6 @@ abstract class ClientRequest(engine : HttpClientEngine) {
         return httpResponse.status.value
     }
 
-    /**
-     * Sends DELETE request on an endpoint's entity. Endpoint depends on the derived class from which this method is called.
-     *
-     * @param id the id of the database entity
-     * @return Status code of the http response
-     */
-    suspend fun delete(id: Int) : Int {
-        val httpResponse: HttpResponse = client.delete("$address/$endpoint/$id")
-        return httpResponse.status.value
-    }
-
     // should return the PATCHed entity instead of Unit
     suspend inline fun <reified T> patch(id: Int, entity: T): T? {
         val httpResponse: HttpResponse = client.patch("$address/$endpoint/$id") {

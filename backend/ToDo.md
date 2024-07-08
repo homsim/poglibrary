@@ -7,6 +7,7 @@
 - [ ] Add Logging
 - [ ] Configure a test environment that is automatically populated at startup
 - [ ] Configure a "customer"-live environment that does NOT empty the database upon restart
+- [ ] Refactor `com.poglibrary.backend.control.FetchBookInfo.OpenLibraryClient`
 - [ ] Add a backup API as fallback for OpenLibrary
 
 ## Additional features
