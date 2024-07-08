@@ -108,7 +108,26 @@ class BookRequestUnitTest {
                 bookRequest.patch<Book>(1, book)
             )
         }
+    }
 
+    @Test fun deleteTest() {
+        // return body is the same as for a GET.
+        val testData: String = getTestData("BookDelete.json")
+        runBlocking {
+            val mockEngine = MockEngine { _ ->
+                respond(
+                    content = ByteReadChannel(testData),
+                    status = HttpStatusCode.OK,
+                    headers = headersOf(HttpHeaders.ContentType, "application/json")
+                )
+            }
+            val bookRequest = BookRequest(mockEngine)
+
+            Assert.assertEquals(
+                200,
+                bookRequest.delete(1)
+            )
+        }
     }
 
 }

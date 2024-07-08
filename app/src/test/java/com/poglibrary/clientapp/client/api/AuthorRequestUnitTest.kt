@@ -109,6 +109,7 @@ class AuthorRequestUnitTest {
                 authorRequest.patch<Author>(1, author)
             )
         }
-
     }
+
+    // no unit test for DELETE because deleting an author alone will result in foreign key restraint error
 }

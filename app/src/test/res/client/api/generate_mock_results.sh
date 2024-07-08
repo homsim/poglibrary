@@ -28,7 +28,7 @@ POST_BODY_AUTHOR='
 curl -X POST "$AUTHOR_URL" \
      -H "Content-Type: application/json" \
      -d "$POST_BODY_AUTHOR" \
-     -u "$CREDS"
+     -u "$CREDS" > /dev/null 2>&1
 
 # GET /authors
 curl -X GET "$AUTHOR_URL" \
@@ -60,7 +60,7 @@ POST_BODY_BOOK='
 curl -X POST "$BOOK_URL" \
      -H "Content-Type: application/json" \
      -d "$POST_BODY_BOOK" \
-     -u "$CREDS"
+     -u "$CREDS" > /dev/null 2>&1
 
 # GET /books
 curl -X GET "$BOOK_URL" \
@@ -81,3 +81,7 @@ curl -X PATCH "$BOOK_URL/1" \
      -H "Content-Type: application/json" \
      -d "$PATCH_BODY_BOOK" \
      -u "$CREDS" > BookGetPatched.json
+
+# DELETE /books/1
+curl -X DELETE "$BOOK_URL/1" \
+    -u "$CREDS" > BookDelete.json
