@@ -22,7 +22,6 @@ abstract class ClientRequest(engine : HttpClientEngine) {
     TODO:
      - Find a proper way to handle user login etc. (a mock login is also possible for now,
      because it will only be used in a local network anyway)
-     - Write Unit/Integration tests for the API methods -> how to handle automatic population?
      */
     var address : String = "http://10.0.2.2:8080" // this really should not be a var, but is now for unit tests
     val client : HttpClient = HttpClient(engine)
