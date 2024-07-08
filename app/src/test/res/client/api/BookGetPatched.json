@@ -1,0 +1,20 @@
+{
+  "id" : 1,
+  "isbn" : "9783453317178",
+  "title" : "Rune",
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/books/1"
+    },
+    "book" : {
+      "href" : "http://localhost:8080/books/1{?projection}",
+      "templated" : true
+    },
+    "authors" : {
+      "href" : "http://localhost:8080/books/1/authors"
+    },
+    "borrower" : {
+      "href" : "http://localhost:8080/books/1/borrower"
+    }
+  }
+}

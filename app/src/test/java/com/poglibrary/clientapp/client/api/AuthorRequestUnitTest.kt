@@ -75,8 +75,8 @@ class AuthorRequestUnitTest {
             val authorRequest = AuthorRequest(mockEngine)
 
             val author = Author(
-                "Frank",
-                "Herbert"
+                "Liu",
+                "Cixin"
             )
 
             Assert.assertEquals(
@@ -101,7 +101,7 @@ class AuthorRequestUnitTest {
             val authorRequest = AuthorRequest(mockEngine)
 
             val author = Author(
-                "Franklin",
+                "Louis"
             )
 
             Assert.assertEquals(

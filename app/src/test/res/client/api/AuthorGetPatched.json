@@ -1,18 +1,18 @@
 {
-  "id": 1,
-  "firstname": "Franklin",
-  "lastname": "Herbert",
-  "formal": "Herbert, Frank",
-  "_links": {
-    "self": {
-      "href": "http://localhost:8080/authors/1"
+  "id" : 1,
+  "firstname" : "Louis",
+  "lastname" : "Cixin",
+  "formal" : "Cixin, Louis",
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/authors/1"
     },
-    "author": {
-      "href": "http://localhost:8080/authors/1"
+    "author" : {
+      "href" : "http://localhost:8080/authors/1"
     },
-    "books": {
-      "href": "http://localhost:8080/authors/1/books{?projection}",
-      "templated": true
+    "books" : {
+      "href" : "http://localhost:8080/authors/1/books{?projection}",
+      "templated" : true
     }
   }
 }
