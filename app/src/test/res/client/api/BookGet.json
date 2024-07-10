@@ -10,11 +10,11 @@
       "href" : "http://localhost:8080/books/1{?projection}",
       "templated" : true
     },
-    "borrower" : {
-      "href" : "http://localhost:8080/books/1/borrower"
-    },
     "authors" : {
       "href" : "http://localhost:8080/books/1/authors"
+    },
+    "borrower" : {
+      "href" : "http://localhost:8080/books/1/borrower"
     }
   }
 }

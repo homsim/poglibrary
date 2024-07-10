@@ -1,0 +1,33 @@
+{
+  "_embedded" : {
+    "borrowers" : [ {
+      "id" : 1,
+      "firstname" : "Marx",
+      "lastname" : "von Hinten",
+      "formal" : "von Hinten, Marx",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/borrowers/1"
+        },
+        "borrower" : {
+          "href" : "http://localhost:8080/borrowers/1"
+        },
+        "books" : {
+          "href" : "http://localhost:8080/borrowers/1/books{?projection}",
+          "templated" : true
+        }
+      }
+    } ]
+  },
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/borrowers"
+    },
+    "profile" : {
+      "href" : "http://localhost:8080/profile/borrowers"
+    },
+    "search" : {
+      "href" : "http://localhost:8080/borrowers/search"
+    }
+  }
+}
