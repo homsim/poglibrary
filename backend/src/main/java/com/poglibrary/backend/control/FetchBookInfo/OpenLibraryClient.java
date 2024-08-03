@@ -1,5 +1,9 @@
 package com.poglibrary.backend.control.FetchBookInfo;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -14,19 +18,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import javax.imageio.ImageIO;
+
 import lombok.Getter;
 
 @Getter
 public class OpenLibraryClient {
 
-    private String title;
+    /*
+     * ToDo: refactor the whole class (possibly into multiple classes) and use Jackson
+     */
 
-    private Set<String> authors;
+    private final String title;
+    private final Set<String> authors;
+    private final String isbn_13;
+    private final byte[] cover;
 
-    private String isbn_13;
-
-    private JSONObject books;
-    private JSONObject search;
+    private final JSONObject books;
+    private final JSONObject search;
 
     public OpenLibraryClient(String isbn) throws IOException, URISyntaxException {
         this.search = getJsonSearch(isbn);
@@ -42,6 +51,7 @@ public class OpenLibraryClient {
         this.title = getTitleJson(this.books);
         this.authors = getAuthorJson(this.search);
         this.isbn_13 = getIsbnJson(this.books);
+        this.cover = getCover(this.books,"M");
 
     }
 
@@ -59,7 +69,22 @@ public class OpenLibraryClient {
                 key +
                 ".json";
 
-        URI uri = new URI(uriStr);
+        URL url = (new URI(uriStr)).toURL();
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setInstanceFollowRedirects(true);
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("charset", "utf-8");
+        connection.connect();
+
+        InputStream inStream = connection.getInputStream();
+        JSONTokener tokener = new JSONTokener(inStream);
+        return new JSONObject(tokener);
+    }
+
+    private static JSONObject getJson(URI uri) throws IOException {
         URL url = uri.toURL();
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -72,30 +97,10 @@ public class OpenLibraryClient {
 
         InputStream inStream = connection.getInputStream();
         JSONTokener tokener = new JSONTokener(inStream);
-        JSONObject object = new JSONObject(tokener);
-
-        return object;
+        return new JSONObject(tokener);
     }
 
-    private static JSONObject getJson(URI uri) throws IOException, URISyntaxException {
-        URL url = uri.toURL();
-
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
-        connection.setInstanceFollowRedirects(true);
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("charset", "utf-8");
-        connection.connect();
-
-        InputStream inStream = connection.getInputStream();
-        JSONTokener tokener = new JSONTokener(inStream);
-        JSONObject object = new JSONObject(tokener);
-
-        return object;
-    }
-
-    private String getTitleJson(JSONObject books) throws IOException, URISyntaxException {
+    private String getTitleJson(JSONObject books) {
         String fullTitle = "";
         String title = books.getString("title");
         try {
@@ -123,10 +128,36 @@ public class OpenLibraryClient {
         return authors;
     }
 
-    private static String getIsbnJson(JSONObject books) throws IOException, URISyntaxException {
+    private static String getIsbnJson(JSONObject books) {
         JSONArray isbnArray = books.getJSONArray("isbn_13");
-        String isbn_13 = isbnArray.getString(0);
+        return  isbnArray.getString(0);
+    }
 
-        return isbn_13;
+    private byte[] getCover(JSONObject books, String size) throws IOException, URISyntaxException {
+        String uriStr = "https://covers.openlibrary.org/b/id/" +
+                books.getJSONArray("covers").getInt(0) +
+                "-" +
+                size +
+                ".jpg";
+
+        URL url = (new URI(uriStr)).toURL();
+
+        return getImageAsByteArray(url);
+    }
+
+    private byte[] getImageAsByteArray(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setInstanceFollowRedirects(true);
+        connection.setRequestMethod("GET");
+
+        InputStream inputStream = new BufferedInputStream(connection.getInputStream());
+        BufferedImage image = ImageIO.read(inputStream);
+        inputStream.close();
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", bos);
+
+        return bos.toByteArray();
     }
 }

@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import com.poglibrary.backend.control.FetchBookInfo.OpenLibraryClient;
 import com.poglibrary.backend.model.Author;
 import com.poglibrary.backend.model.Book;
+import com.poglibrary.backend.model.Cover;
 import com.poglibrary.backend.repository.AuthorRepository;
 import com.poglibrary.backend.repository.BookRepository;
+import com.poglibrary.backend.repository.CoverRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -34,6 +36,9 @@ public class BookEventHandler {
     @Autowired
     AuthorRepository authorRepository;
 
+    @Autowired
+    CoverRepository coverRepository;
+
     @HandleBeforeCreate
     public void beforeCreate(Book book) throws IOException, URISyntaxException {
         String isbnFormatted = book.getIsbn().replace("-", "");
@@ -41,7 +46,10 @@ public class BookEventHandler {
 
         /*
          * if only the isbn is given, get the other fields via Open Library API
-         * ToDo: fallback scenario for another API if Open Library does not find the book
+         * ToDo:
+         *  - fallback scenario for another API if Open Library does not find the book
+         *  - if book.requestedCover -> get cover from API...
+         *    -> add the field and refactor openLibraryClient
          */
         if (book.getAuthors() == null || book.getTitle() == null) {
             OpenLibraryClient client = new OpenLibraryClient(isbnFormatted);
@@ -59,7 +67,7 @@ public class BookEventHandler {
                             .findByFirstnameAndLastname(newAuthor.getFirstname(),
                                     newAuthor.getLastname());
 
-                    if (existingAuthors.size() == 0) {
+                    if (existingAuthors.isEmpty()) {
                         entityManager.persist(newAuthor);
                         authors.add(newAuthor);
                     } else {
@@ -69,6 +77,14 @@ public class BookEventHandler {
                 }
                 book.setAuthors(authors);
             }
+
+            if (book.coverRequested()) {
+                byte[] coverBytes = client.getCover();
+                Cover cover = new Cover(coverBytes);
+                coverRepository.save(cover);
+
+                book.setCover(cover);
+            }
         }
     }
     
@@ -76,7 +92,7 @@ public class BookEventHandler {
     public void cleanupAuthors(Book book) {
         // delete all authors of the deleted book, that don't have any more writtenBooks 
         for (Author author : book.getAuthors()) {
-            if (author.getBooks() == null || author.getBooks().size() == 0) {
+            if (author.getBooks() == null || author.getBooks().isEmpty()) {
                 authorRepository.deleteById(author.getId());
             }
         }
