@@ -9,9 +9,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +23,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class Book {
-
+    /*
+     * ToDo:
+     *  - GET on the entity ( /books/1 ) does not use the BookProjection
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -33,8 +38,16 @@ public class Book {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "coverRequested")
+    private Boolean coverRequested = false;
+
+    @OneToOne
+    @JoinColumn(name = "coverId")
+    private Cover cover;
+
     @ManyToMany(targetEntity = com.poglibrary.backend.model.Author.class, fetch = FetchType.EAGER)
-    @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "bookId"), inverseJoinColumns = @JoinColumn(name = "authorId"))
+    @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "bookId"),
+            inverseJoinColumns = @JoinColumn(name = "authorId"))
     private Set<Author> authors;
 
     @ManyToOne
@@ -47,6 +60,8 @@ public class Book {
         this.authors = authors;
         this.borrower = null;
     }
+
+    public Boolean coverRequested() { return this.coverRequested; }
 
     @Override
     public String toString() {

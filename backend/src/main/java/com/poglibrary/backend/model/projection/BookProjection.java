@@ -7,6 +7,7 @@ import org.springframework.data.rest.core.config.Projection;
 import com.poglibrary.backend.model.Author;
 import com.poglibrary.backend.model.Book;
 import com.poglibrary.backend.model.Borrower;
+import com.poglibrary.backend.model.Cover;
 
 
 @Projection(name = "bookProjection", types = { Book.class })
@@ -20,4 +21,6 @@ public interface BookProjection {
     Set<Author> getAuthors();
 
     Borrower getBorrower();
+
+    Cover getCover();
 }
