@@ -52,15 +52,16 @@ public class BookEventHandler {
          *    -> add the field and refactor openLibraryClient
          */
         if (book.getAuthors() == null || book.getTitle() == null) {
+            //OpenLibraryClient client = new OpenLibraryClient(isbnFormatted);
             OpenLibraryClient client = new OpenLibraryClient(isbnFormatted);
 
             if (book.getTitle() == null) {
-                book.setTitle(client.getTitle());
+                book.setTitle(client.getEdition().getTitle());
             }
 
             if (book.getAuthors() == null) {
                 Set<Author> authors = new HashSet<Author>();
-                for (String clientAuthor : client.getAuthors()) {
+                for (String clientAuthor : client.getEdition().getAuthorNames()) {
                     Author newAuthor = new Author(clientAuthor);
 
                     Set<Author> existingAuthors = authorRepository
@@ -79,7 +80,9 @@ public class BookEventHandler {
             }
 
             if (book.coverRequested()) {
-                byte[] coverBytes = client.getCover();
+                // for now just use the very first image that is found
+                // also check for null-safety
+                byte[] coverBytes = client.getEdition().getCoverImagesImages()[0];
                 Cover cover = new Cover(coverBytes);
                 coverRepository.save(cover);
 

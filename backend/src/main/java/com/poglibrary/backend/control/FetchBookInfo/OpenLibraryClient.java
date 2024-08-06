@@ -1,6 +1,9 @@
 package com.poglibrary.backend.control.FetchBookInfo;
 
-import java.awt.Image;
+import com.poglibrary.backend.control.FetchBookInfo.OpenLibraryTypes.Author;
+import com.poglibrary.backend.control.FetchBookInfo.OpenLibraryTypes.Edition;
+import com.poglibrary.backend.control.FetchBookInfo.OpenLibraryTypes.Cover;
+
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,148 +13,83 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.imageio.ImageIO;
 
 import lombok.Getter;
 
-@Getter
 public class OpenLibraryClient {
-
     /*
-     * ToDo: refactor the whole class (possibly into multiple classes) and use Jackson
+     * ToDo:
+     *  - resolve the covers -> need to create a new type
+     *  - IS THERE A BETTER ARCHITECTURE TO USE HERE? IT FEELS WRONG TO CREATE AN OBJECT OF THIS CLASS...
      */
-
-    private final String title;
-    private final Set<String> authors;
-    private final String isbn_13;
-    private final byte[] cover;
-
-    private final JSONObject books;
-    private final JSONObject search;
+    private final String root = "https://openlibrary.org";
+    @Getter
+    private final Edition edition;
+    private final Cover[] covers;
 
     public OpenLibraryClient(String isbn) throws IOException, URISyntaxException {
-        this.search = getJsonSearch(isbn);
-
-        JSONArray docs = this.search.getJSONArray("docs");
-        JSONObject docsObj = docs.getJSONObject(0);
-        JSONObject editions = docsObj.getJSONObject("editions");
-        JSONArray editionsDocs = editions.getJSONArray("docs");
-        JSONObject editionDocsObj = editionsDocs.getJSONObject(0);
-        String key = editionDocsObj.getString("key");
-        this.books = getJson(key);
-
-        this.title = getTitleJson(this.books);
-        this.authors = getAuthorJson(this.search);
-        this.isbn_13 = getIsbnJson(this.books);
-        this.cover = getCover(this.books,"M");
-
+        this.edition = createEdition(isbn);
+        this.covers = createCover(this.edition);
+        this.edition.setCoverImages(this.covers);
     }
 
-    private static JSONObject getJsonSearch(String key) throws IOException, URISyntaxException {
-        String uriStr = "https://openlibrary.org/search.json?q=" +
-                key +
-                "&fields=key,title,author_name,editions";
-
-        URI uri = new URI(uriStr);
-        return getJson(uri);
+    private enum HttpFormat {
+        JSON,
+        JPG
     }
 
-    private static JSONObject getJson(String key) throws IOException, URISyntaxException {
-        String uriStr = "https://openlibrary.org/" +
-                key +
-                ".json";
-
-        URL url = (new URI(uriStr)).toURL();
-
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
-        connection.setInstanceFollowRedirects(true);
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("charset", "utf-8");
-        connection.connect();
-
-        InputStream inStream = connection.getInputStream();
-        JSONTokener tokener = new JSONTokener(inStream);
-        return new JSONObject(tokener);
-    }
-
-    private static JSONObject getJson(URI uri) throws IOException {
-        URL url = uri.toURL();
-
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
-        connection.setInstanceFollowRedirects(true);
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("charset", "utf-8");
-        connection.connect();
-
-        InputStream inStream = connection.getInputStream();
-        JSONTokener tokener = new JSONTokener(inStream);
-        return new JSONObject(tokener);
-    }
-
-    private String getTitleJson(JSONObject books) {
-        String fullTitle = "";
-        String title = books.getString("title");
-        try {
-            String subtitle = books.getString("subtitle");
-            fullTitle = title + " - " + subtitle;
-        } catch (JSONException ex) {
-            // if there is no subtitle, use only the title
-            // -> somehow log this as a WARNING
-            fullTitle = title;
+    private Edition createEdition(String isbn) throws IOException, URISyntaxException {
+        String json = ".json";
+        Edition edition = fetchAndDeserializeJSON(
+                Edition.class,
+                this.root + "/isbn/" + isbn + json
+        );
+        // resolve the authors
+        for (Author author : edition.getAuthors()) {
+            author.setName(fetchAndDeserializeJSON(
+                    Author.class,
+                    this.root + author.getKey() + json
+            ).getName());
         }
-
-        return fullTitle;
+        return edition;
     }
 
-    private static Set<String> getAuthorJson(JSONObject search) {
-        JSONArray docs = search.getJSONArray("docs");
-        JSONObject docsObj = docs.getJSONObject(0);
-        JSONArray authorsArray = docsObj.getJSONArray("author_name");
-        
-        Set<String> authors = new HashSet<String>();
-        for (int i = 0; i < authorsArray.length(); i++) {
-            authors.add(authorsArray.getString(i));
+    private Cover[] createCover(Edition edition) throws IOException, URISyntaxException {
+        String size = "M"; // maybe make this a parameter at some point
+        Integer[] coverKeys = edition.getCovers();
+        Cover[] covers = new Cover[coverKeys.length];
+
+        for (int i = 0; i < coverKeys.length; i++) {
+            covers[i] = new Cover(
+                    coverKeys[i],
+                    getImageAsByteArray(coverKeys[i], size)
+                    // this doesn't work because the above method tries to deserialize a JPG into a JSON
+            );
         }
-
-        return authors;
+        return covers;
     }
 
-    private static String getIsbnJson(JSONObject books) {
-        JSONArray isbnArray = books.getJSONArray("isbn_13");
-        return  isbnArray.getString(0);
-    }
-
-    private byte[] getCover(JSONObject books, String size) throws IOException, URISyntaxException {
-        String uriStr = "https://covers.openlibrary.org/b/id/" +
-                books.getJSONArray("covers").getInt(0) +
-                "-" +
-                size +
-                ".jpg";
-
+    private <T> T fetchAndDeserializeJSON(Class<T> clazz, String uriStr) throws IOException, URISyntaxException {
         URL url = (new URI(uriStr)).toURL();
-
-        return getImageAsByteArray(url);
+        HttpURLConnection connection = connectOpenLibrary(url, HttpFormat.JSON);
+        InputStream inStream = connection.getInputStream();
+        return new ObjectMapper().readValue(inStream, clazz);
     }
 
-    private byte[] getImageAsByteArray(URL url) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
-        connection.setInstanceFollowRedirects(true);
-        connection.setRequestMethod("GET");
+    private byte[] getImageAsByteArray(Integer key, String size) throws IOException, URISyntaxException {
+        URL url = (new URI(
+                "https://covers.openlibrary.org/b/id/" +
+                        key + "-" + size + ".jpg"
+        )).toURL();
 
-        InputStream inputStream = new BufferedInputStream(connection.getInputStream());
+        InputStream inputStream = new BufferedInputStream(connectOpenLibrary(
+                url,
+                HttpFormat.JPG
+        ).getInputStream());
         BufferedImage image = ImageIO.read(inputStream);
         inputStream.close();
 
@@ -160,4 +98,22 @@ public class OpenLibraryClient {
 
         return bos.toByteArray();
     }
+
+    private HttpURLConnection connectOpenLibrary(URL url, HttpFormat httpFormat) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setInstanceFollowRedirects(true);
+        connection.setRequestMethod("GET");
+        switch (httpFormat) {
+            case JSON:
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setRequestProperty("charset", "UTF-8");
+            case JPG:
+                connection.setRequestProperty("Content-Type", "image/jpeg");
+                connection.setRequestProperty("charset", "UTF-8");
+        }
+        connection.connect();
+        return connection;
+    }
+
 }
