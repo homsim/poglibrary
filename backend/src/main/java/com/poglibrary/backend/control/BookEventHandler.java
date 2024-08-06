@@ -48,11 +48,8 @@ public class BookEventHandler {
          * if only the isbn is given, get the other fields via Open Library API
          * ToDo:
          *  - fallback scenario for another API if Open Library does not find the book
-         *  - if book.requestedCover -> get cover from API...
-         *    -> add the field and refactor openLibraryClient
          */
         if (book.getAuthors() == null || book.getTitle() == null) {
-            //OpenLibraryClient client = new OpenLibraryClient(isbnFormatted);
             OpenLibraryClient client = new OpenLibraryClient(isbnFormatted);
 
             if (book.getTitle() == null) {

@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -58,19 +59,17 @@ public class OpenLibraryClient {
         return edition;
     }
 
-    private Cover[] createCover(Edition edition) throws IOException, URISyntaxException {
+    private Cover[] createCover(Edition edition) {
         String size = "M"; // maybe make this a parameter at some point
-        Integer[] coverKeys = edition.getCovers();
-        Cover[] covers = new Cover[coverKeys.length];
-
-        for (int i = 0; i < coverKeys.length; i++) {
-            covers[i] = new Cover(
-                    coverKeys[i],
-                    getImageAsByteArray(coverKeys[i], size)
-                    // this doesn't work because the above method tries to deserialize a JPG into a JSON
-            );
-        }
-        return covers;
+        return Arrays.stream(edition.getCovers())
+                .map(coverKey -> {
+                    try {
+                        return new Cover(coverKey, getImageAsByteArray(coverKey, size));
+                    } catch (IOException | URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .toArray(Cover[]::new);
     }
 
     private <T> T fetchAndDeserializeJSON(Class<T> clazz, String uriStr) throws IOException, URISyntaxException {
